@@ -52,13 +52,13 @@ public class SearchCmd extends MusicCommand {
         this.name = "search";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.arguments = "<query>";
-        this.help = "指定した文字列を使用してYouTube上の動画を検索します。";
+        this.help = "Search for videos on YouTube using the specified string.";
         this.beListening = true;
         this.bePlaying = false;
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
 
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.STRING, "input", "検索ワード", true));
+        options.add(new OptionData(OptionType.STRING, "input", "search word", true));
         this.options = options;
 
         builder = new OrderedMenu.Builder()
@@ -72,16 +72,16 @@ public class SearchCmd extends MusicCommand {
     @Override
     public void doCommand(CommandEvent event) {
         if (event.getArgs().isEmpty()) {
-            event.replyError("文字列を指定してください。");
+            event.replyError("Please specify a string.");
             return;
         }
-        event.reply(searchingEmoji + "`[" + event.getArgs() + "]`を検索中... ",
+        event.reply(searchingEmoji + "`[" + event.getArgs() + "]`Searching for... ",
                 m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), searchPrefix + event.getArgs(), new ResultHandler(m, event)));
     }
 
     @Override
     public void doCommand(SlashCommandEvent event) {
-        event.reply(searchingEmoji + "`[" + event.getOption("input").getAsString() + "]`を検索中... ").queue(
+        event.reply(searchingEmoji + "`[" + event.getOption("input").getAsString() + "]`Searching for... ").queue(
                 m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), searchPrefix + event.getOption("input").getAsString(), new SlashResultHandler(m, event)));
     }
 
@@ -140,16 +140,16 @@ public class SearchCmd extends MusicCommand {
 
         @Override
         public void noMatches() {
-            m.editOriginal(FormatUtil.filter(event.getClient().getWarning() + " の検索結果はありません。 `" + event.getOption("input").getAsString() + "`.")).queue();
+            m.editOriginal(FormatUtil.filter(event.getClient().getWarning() + " No search results found." + event.getOption("input").getAsString() + "`.")).queue();
         }
 
         @Override
         public void loadFailed(FriendlyException throwable) {
 
             if (throwable.severity == Severity.COMMON)
-                m.editOriginal(event.getClient().getError() + " 読み込み中にエラーが発生しました: " + throwable.getMessage()).queue();
+                m.editOriginal(event.getClient().getError() + " An error occured while loading: " + throwable.getMessage()).queue();
             else
-                m.editOriginal(event.getClient().getError() + " 読み込み中にエラーが発生しました").queue();
+                m.editOriginal(event.getClient().getError() + " An error occured while loading ").queue();
         }
     }
 
@@ -165,35 +165,35 @@ public class SearchCmd extends MusicCommand {
         @Override
         public void trackLoaded(AudioTrack track) {
             if (bot.getConfig().isTooLong(track)) {
-                m.editMessage(FormatUtil.filter(event.getClient().getWarning() + " この曲 (**" + track.getInfo().title + "**) は許可されている最大長よりも長いです。 `"
+                m.editMessage(FormatUtil.filter(event.getClient().getWarning() + " The song (**" + track.getInfo().title + "**) is longer than the maximum length allowed"
                         + FormatUtil.formatTime(track.getDuration()) + "` > `" + bot.getConfig().getMaxTime() + "`")).queue();
                 return;
             }
             AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor())) + 1;
             m.editMessage(FormatUtil.filter(event.getClient().getSuccess() + " **" + track.getInfo().title
-                    + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? "の再生を開始します。"
-                    : "を" + pos + "番目の再生待ちに追加しました。"))).queue();
+                    + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? "Added."
+                    : "Added " + pos + " to the queue."))).queue();
         }
 
         @Override
         public void playlistLoaded(AudioPlaylist playlist) {
             builder.setColor(event.getSelfMember().getColor())
-                    .setText(FormatUtil.filter(event.getClient().getSuccess() + " `" + event.getArgs() + "`の検索結果:"))
+                    .setText(FormatUtil.filter(event.getClient().getSuccess() + " `" + event.getArgs() + "Search results for: "))
                     .setChoices()
                     .setSelection((msg, i) ->
                     {
                         AudioTrack track = playlist.getTracks().get(i - 1);
                         if (bot.getConfig().isTooLong(track)) {
-                            event.replyWarning("この曲 (**" + track.getInfo().title + "**) は、許容される最大長より長いです。: `"
+                            event.replyWarning("This song (**" + track.getInfo().title + "**) is longer than the maximum length allowed"
                                     + FormatUtil.formatTime(track.getDuration()) + "` > `" + bot.getConfig().getMaxTime() + "`");
                             return;
                         }
                         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
                         int pos = handler.addTrack(new QueuedTrack(track, event.getAuthor())) + 1;
                         event.replySuccess("**" + FormatUtil.filter(track.getInfo().title)
-                                + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? "の再生を開始します。"
-                                : "を" + pos + "番目の再生待ちに追加しました。"));
+                                + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? "Added."
+                                : "Added " + pos + " to the queue"));
                     })
                     .setCancel((msg) -> {
                     })
