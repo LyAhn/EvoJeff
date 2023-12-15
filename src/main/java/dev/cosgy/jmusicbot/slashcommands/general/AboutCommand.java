@@ -41,122 +41,121 @@ import java.util.Objects;
 )
 @Author("Cosgy Dev")
 public class AboutCommand extends SlashCommand {
-     private final color;
-     private final String description;
-     private final Permission[] perms;
-     private final String[] features;
-     private boolean IS_AUTHOR = true;
-     private String REPLACEMENT_ICON = "+";
-     private String oauthLink;
+    private final Color color;
+    private final String description;
+    private final Permission[] perms;
+    private final String[] features;
+    private boolean IS_AUTHOR = true;
+    private String REPLACEMENT_ICON = "+";
+    private String oauthLink;
 
-     public AboutCommand(Color color, String description, String[] features, Permission... perms) {
-         this.color = color;
-         this.description = description;
-         this.features = features;
-         this.name = "about";
-         this.help = "Display information about the bot";
-         this.aliases = new String[]{"botinfo", "info"};
-         this.guildOnly = false;
-         this.perms = perms;
-         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
-     }
+    public AboutCommand(Color color, String description, String[] features, Permission... perms) {
+        this.color = color;
+        this.description = description;
+        this.features = features;
+        this.name = "about";
+        this.help = "Display information about the bot";
+        this.aliases = new String[]{"botinfo", "info"};
+        this.guildOnly = false;
+        this.perms = perms;
+        this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
+    }
 
-     public void setIsAuthor(boolean value) {
-         this.IS_AUTHOR = value;
-     }
+    public void setIsAuthor(boolean value) {
+        this.IS_AUTHOR = value;
+    }
 
-     public void setReplacementCharacter(String value) {
-         this.REPLACEMENT_ICON = value;
-     }
+    public void setReplacementCharacter(String value) {
+        this.REPLACEMENT_ICON = value;
+    }
 
-     @Override
-     protected void execute(SlashCommandEvent event) {
-         if (oauthLink == null) {
-             try {
-                 ApplicationInfo info = event.getJDA().retrieveApplicationInfo().complete();
-                 oauthLink = info.isBotPublic() ? info.getInviteUrl(0L, perms) : "";
-             } catch (Exception e) {
-                 Logger log = LoggerFactory.getLogger("OAuth2");
-                 log.error("Could not generate invitation link ", e);
-                 oauthLink = "";
-             }
-         }
-         EmbedBuilder builder = new EmbedBuilder();
-         builder.setColor(event.getGuild() == null ? color : event.getGuild().getSelfMember().getColor());
-         builder.setAuthor("" + event.getJDA().getSelfUser().getName() + "Information about", null, event.getJDA().getSelfUser().getAvatarUrl());
-         String CosgyOwner = "Forked by dubsound into English";
-         String author = event.getJDA().getUserById(event.getClient().getOwnerId()) == null ? "<@" + event.getClient().getOwnerId() + ">"
-                 : Objects.requireNonNull(event.getJDA().getUserById(event.getClient().getOwnerId())).getName();
-         StringBuilder descr = new StringBuilder().append("Hello! **").append(event.getJDA().getSelfUser().getName()).append("This is **. ")
-                 .append(description).append(" is ").append("[" + JDAUtilitiesInfo.AUTHOR + "](https://github.com/JDA-Applications) [Commands Extension](" + JDAUtilitiesInfo.GITHUB + ") (")
-                 .append(JDAUtilitiesInfo.VERSION).append(") and [JDA library](https://github.com/DV8FromTheWorld/JDA) (")
-                 .append(JDAInfo.VERSION).append(") and is owned by ").append((IS_AUTHOR ? CosgyOwner : author + "."))
-                 .append(event.getJDA().getSelfUser().getName()).append("If you have any questions, please contact dubsound on Discord")
-                 .append("\nHow to use this bot`").append("/help")
-                 .append("You can check with `.").append("\n\nFeatures: ```css");
-         for (String feature : features)
-             descr.append("\n").append(event.getClient().getSuccess().startsWith("<") ? REPLACEMENT_ICON : event.getClient().getSuccess()).append(" ").append( feature);
-         descr.append("````");
-         builder.setDescription(descr);
-
-         if (event.getJDA().getShardInfo().getShardTotal() == 1) {
-             builder.addField("Status", event.getJDA().getGuilds().size() + "Server\n1 Shard", true);
-             builder.addField("Users", event.getJDA().getUsers().size() + "Unique\n" + event.getJDA().getGuilds().stream().mapToInt(g -> g.getMembers ().size()).sum() + "sum", true);
-             builder.addField("Channels", event.getJDA().getTextChannels().size() + "Text\n" + event.getJDA().getVoiceChannels().size() + "Voice", true);
-         } else {
-             builder.addField("Status", (event.getClient()).getTotalGuilds() + "Server\nShard" + (event.getJDA().getShardInfo().getShardId() + 1)
-                     + "/" + event.getJDA().getShardInfo().getShardTotal(), true);
-             builder.addField("", event.getJDA().getUsers().size() + "Users' shard\n" + event.getJDA().getGuilds().size() + "Server", true);
-             builder.addField("", event.getJDA().getTextChannels().size() + "Text Channels\n" + event.getJDA().getVoiceChannels().size() + "Voice Channels", true);
-         }
-         builder.setFooter("Time when restart occurred", "https://th.bing.com/th/id/OIG.AWZcgROQPda8Tzywfmc1?pid=ImgGn");
-         builder.setTimestamp(event.getClient().getStartTime());
-         event.replyEmbeds(builder.build()).queue();
-     }
+    @Override
+    protected void execute(SlashCommandEvent event) {
+        if (oauthLink == null) {
+            try {
+                ApplicationInfo info = event.getJDA().retrieveApplicationInfo().complete();
+                oauthLink = info.isBotPublic() ? info.getInviteUrl(0L, perms) : "";
+            } catch (Exception e) {
+                Logger log = LoggerFactory.getLogger("OAuth2");
+                log.error("Could not generate invitation link ", e);
+                oauthLink = "";
+            }
+        }
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(event.getGuild() == null ? color : event.getGuild().getSelfMember().getColor());
+        builder.setAuthor("" + event.getJDA().getSelfUser().getName() + "Information about", null, event.getJDA().getSelfUser().getAvatarUrl());
+        String CosgyOwner = "Forked by dubsound into English";
+        String author = event.getJDA().getUserById(event.getClient().getOwnerId()) == null ? "<@" + event.getClient().getOwnerId() + ">"
+                : Objects.requireNonNull(event.getJDA().getUserById(event.getClient().getOwnerId())).getName();
+        StringBuilder descr = new StringBuilder().append("Hello! **").append(event.getJDA().getSelfUser().getName()).append("This is **. ")
+                .append(description).append(" is ").append("[" + JDAUtilitiesInfo.AUTHOR + "](https://github.com/JDA-Applications) [Commands Extension](" + JDAUtilitiesInfo.GITHUB + ") (")
+                .append(JDAUtilitiesInfo.VERSION).append(") and [JDA library](https://github.com/DV8FromTheWorld/JDA) (")
+                .append(JDAInfo.VERSION).append(") and is owned by ").append((IS_AUTHOR ? CosgyOwner : author + "."))
+                .append(event.getJDA().getSelfUser().getName()).append("If you have any questions, please contact dubsound on Discord")
+                .append("\nHow to use this bot`").append("/help")
+                .append("You can check with `.").append("\n\nFeatures: ```css");
+        for (String feature : features)
+            descr.append("\n").append(event.getClient().getSuccess().startsWith("<") ? REPLACEMENT_ICON : event.getClient().getSuccess()).append(" ").append( feature);
+        descr.append("````");
+        builder.setDescription(descr);
+        if (event.getJDA().getShardInfo().getShardTotal() == 1) {
+            builder.addField("Status", event.getJDA().getGuilds().size() + "Server\n1 Shard", true);
+            builder.addField("Users", event.getJDA().getUsers().size() + "Unique\n" + event.getJDA().getGuilds().stream().mapToInt(g -> g.getMembers ().size()).sum() + "sum", true);
+            builder.addField("Channels", event.getJDA().getTextChannels().size() + "Text\n" + event.getJDA().getVoiceChannels().size() + "Voice", true);
+        } else {
+            builder.addField("Status", (event.getClient()).getTotalGuilds() + "Server\nShard" + (event.getJDA().getShardInfo().getShardId() + 1)
+                    + "/" + event.getJDA().getShardInfo().getShardTotal(), true);
+            builder.addField("", event.getJDA().getUsers().size() + "Users' shard\n" + event.getJDA().getGuilds().size() + "Server", true);
+            builder.addField("", event.getJDA().getTextChannels().size() + "Text Channels\n" + event.getJDA().getVoiceChannels().size() + "Voice Channels", true);
+        }
+        builder.setFooter("Time when restart occurred", "https://th.bing.com/th/id/OIG.AWZcgROQPda8Tzywfmc1?pid=ImgGn");
+        builder.setTimestamp(event.getClient().getStartTime());
+        event.replyEmbeds(builder.build()).queue();
+    }
 	 
-	 Override
-     protected void execute(CommandEvent event) {
-         if (oauthLink == null) {
-             try {
-                 ApplicationInfo info = event.getJDA().retrieveApplicationInfo().complete();
-                 oauthLink = info.isBotPublic() ? info.getInviteUrl(0L, perms) : "";
-             } catch (Exception e) {
-                 Logger log = LoggerFactory.getLogger("OAuth2");
-                 log.error("Could not generate invitation link ", e);
-                 oauthLink = "";
-             }
-         }
-         EmbedBuilder builder = new EmbedBuilder();
-         builder.setColor(event.isFromType(ChannelType.TEXT) ? event.getGuild().getSelfMember().getColor() : color);
-         builder.setAuthor("" + event.getSelfUser().getName() + "About!", null, event.getSelfUser().getAvatarUrl());
-         String CosgyOwner = "Forked by dubsound into English";
-         String author = event.getJDA().getUserById(event.getClient().getOwnerId()) == null ? "<@" + event.getClient().getOwnerId() + ">"
-                 : Objects.requireNonNull(event.getJDA().getUserById(event.getClient().getOwnerId())).getName();
-         StringBuilder descr = new StringBuilder().append("Hello! **").append(event.getSelfUser().getName()).append("This is **. ")
-                 .append(description).append(" is ").append(JDAUtilitiesInfo.AUTHOR + " [command extension](" + JDAUtilitiesInfo.GITHUB + ") (")
-                 .append(JDAUtilitiesInfo.VERSION).append(") and [JDA library](https://github.com/DV8FromTheWorld/JDA) (")
-                 .append(JDAInfo.VERSION).append(") and is owned by ").append((IS_AUTHOR ? CosgyOwner : author + "."))
-                 .append(event.getSelfUser().getName()).append("If you have any questions, please contact dubsound")
-                 .append("\nHow to use this bot`").append(event.getClient().getTextualPrefix()).append(event.getClient().getHelpWord())
-                 .append("You can check with `.").append("\n\nFeatures: ```css");
-         for (String feature : features)
-             descr.append("\n").append(event.getClient().getSuccess().startsWith("<") ? REPLACEMENT_ICON : event.getClient().getSuccess()).append(" ").append( feature);
-         descr.append("````");
-         builder.setDescription(descr);
+    @Override
+    protected void execute(CommandEvent event) {
+        if (oauthLink == null) {
+            try {
+                ApplicationInfo info = event.getJDA().retrieveApplicationInfo().complete();
+                oauthLink = info.isBotPublic() ? info.getInviteUrl(0L, perms) : "";
+            } catch (Exception e) {
+                Logger log = LoggerFactory.getLogger("OAuth2");
+                log.error("Could not generate invitation link ", e);
+                oauthLink = "";
+            }
+        }
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(event.isFromType(ChannelType.TEXT) ? event.getGuild().getSelfMember().getColor() : color);
+        builder.setAuthor("" + event.getSelfUser().getName() + "About!", null, event.getSelfUser().getAvatarUrl());
+        String CosgyOwner = "Forked by dubsound into English";
+        String author = event.getJDA().getUserById(event.getClient().getOwnerId()) == null ? "<@" + event.getClient().getOwnerId() + ">"
+                : Objects.requireNonNull(event.getJDA().getUserById(event.getClient().getOwnerId())).getName();
+        StringBuilder descr = new StringBuilder().append("Hello! **").append(event.getSelfUser().getName()).append("This is **. ")
+                .append(description).append(" is ").append(JDAUtilitiesInfo.AUTHOR + " [command extension](" + JDAUtilitiesInfo.GITHUB + ") (")
+                .append(JDAUtilitiesInfo.VERSION).append(") and [JDA library](https://github.com/DV8FromTheWorld/JDA) (")
+                .append(JDAInfo.VERSION).append(") and is owned by ").append((IS_AUTHOR ? CosgyOwner : author + "."))
+                .append(event.getSelfUser().getName()).append("If you have any questions, please contact dubsound")
+                .append("\nHow to use this bot`").append(event.getClient().getTextualPrefix()).append(event.getClient().getHelpWord())
+                .append("You can check with `.").append("\n\nFeatures: ```css");
+        for (String feature : features)
+            descr.append("\n").append(event.getClient().getSuccess().startsWith("<") ? REPLACEMENT_ICON : event.getClient().getSuccess()).append(" ").append( feature);
+        descr.append("````");
+        builder.setDescription(descr);
 
-         if (event.getJDA().getShardInfo().getShardTotal() == 1) {
-             builder.addField("Status", event.getJDA().getGuilds().size() + "Server\n1 Shard", true);
-             builder.addField("Users", event.getJDA().getUsers().size() + "Unique\n" + event.getJDA().getGuilds().stream().mapToInt(g -> g.getMembers ().size()).sum() + "sum", true);
-             builder.addField("Channels", event.getJDA().getTextChannels().size() + "Text\n" + event.getJDA().getVoiceChannels().size() + "Voice", true);
-         } else {
-             builder.addField("Status", (event.getClient()).getTotalGuilds() + "Server\nShard" + (event.getJDA().getShardInfo().getShardId() + 1)
-                     + "/" + event.getJDA().getShardInfo().getShardTotal(), true);
-             builder.addField("", event.getJDA().getUsers().size() + "Users' shard\n" + event.getJDA().getGuilds().size() + "Server", true);
-             builder.addField("", event.getJDA().getTextChannels().size() + "Text Channels\n" + event.getJDA().getVoiceChannels().size() + "Voice Channels", true);
-         }
-         builder.setFooter("Time when restart occurred", "https://th.bing.com/th/id/OIG.AWZcgROQPda8Tzywfmc1?pid=ImgGn");
-         builder.setTimestamp(event.getClient().getStartTime());
-         event.reply(builder.build());
-     }
+        if (event.getJDA().getShardInfo().getShardTotal() == 1) {
+            builder.addField("Status", event.getJDA().getGuilds().size() + "Server\n1 Shard", true);
+            builder.addField("Users", event.getJDA().getUsers().size() + "Unique\n" + event.getJDA().getGuilds().stream().mapToInt(g -> g.getMembers ().size()).sum() + "sum", true);
+            builder.addField("Channels", event.getJDA().getTextChannels().size() + "Text\n" + event.getJDA().getVoiceChannels().size() + "Voice", true);
+        } else {
+            builder.addField("Status", (event.getClient()).getTotalGuilds() + "Server\nShard" + (event.getJDA().getShardInfo().getShardId() + 1)
+                    + "/" + event.getJDA().getShardInfo().getShardTotal(), true);
+            builder.addField("", event.getJDA().getUsers().size() + "Users' shard\n" + event.getJDA().getGuilds().size() + "Server", true);
+            builder.addField("", event.getJDA().getTextChannels().size() + "Text Channels\n" + event.getJDA().getVoiceChannels().size() + "Voice Channels", true);
+        }
+        builder.setFooter("Time when restart occurred", "https://th.bing.com/th/id/OIG.AWZcgROQPda8Tzywfmc1?pid=ImgGn");
+        builder.setTimestamp(event.getClient().getStartTime());
+        event.reply(builder.build());
+    }
 
 }

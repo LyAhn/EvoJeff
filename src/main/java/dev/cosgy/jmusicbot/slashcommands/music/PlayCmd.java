@@ -297,7 +297,7 @@ if (handler.playFromDefault()) {
              super(bot);
              this.jda = bot.getJDA();
              this.loadingEmoji = bot.getConfig().getLoading();
-             this.name = "request";
+             this.name = "song";
              this.arguments = "<title|URL>";
              this.help = "Request a song.";
              this.aliases = bot.getConfig().getAliases(this.name);
@@ -569,7 +569,7 @@ if (handler.playFromDefault()) {
                  event.reply(event.getClient().getError() + "`" + name + "Could not find .txt`").queue();
                  return;
              }
-             event.reply(":calling: Loading playlist **" + name + "**... (" + playlist.getItems().size() + "songs)").queue(m - >
+             event.reply(":calling: Loading playlist **" + name + "**... (" + playlist.getItems().size() + "songs)").queue(m ->
              {
                  AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
                  playlist.loadTracks(bot.getPlayerManager(), (at) -> handler.addTrack(new QueuedTrack(at, event.getUser())), () -> {
@@ -718,7 +718,7 @@ if (handler.playFromDefault()) {
                  event.reply(event.getClient().getError() + "`" + name + "Could not find .txt `").queue();
                  return;
              }
-             event.reply(":calling: Loading playlist**" + name + "**... (" + playlist.getItems().size() + "songs)").queue(m - >
+             event.reply(":calling: Loading playlist**" + name + "**... (" + playlist.getItems().size() + "songs)").queue(m ->
              {
                  AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
                  playlist.loadTracks(bot.getPlayerManager(), (at) -> handler.addTrack(new QueuedTrack(at, event.getUser())), () -> {

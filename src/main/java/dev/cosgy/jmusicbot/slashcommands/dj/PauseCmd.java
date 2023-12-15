@@ -65,7 +65,7 @@ public class PauseCmd extends DJCommand {
          }
          handler.getPlayer().setPaused(true);
          log.info(event.getGuild().getName() + "paused" + handler.getPlayer().getPlayingTrack().getInfo().title + "at");
-         event.reply(event.getClient().getSuccess() + "**" + handler.getPlayer().getPlayingTrack().getInfo().title + "** has been paused. `" + event. getClient().getPrefix() + " You can unpause using play`).queue();
+         event.reply(event.getClient().getSuccess() + "**" + handler.getPlayer().getPlayingTrack().getInfo().title + "** has been paused. `" + event. getClient().getPrefix() + " You can unpause using play").queue();
 
          Bot.updatePlayStatus(event.getGuild(), event.getGuild().getSelfMember(), PlayStatus.PAUSED);
      }
