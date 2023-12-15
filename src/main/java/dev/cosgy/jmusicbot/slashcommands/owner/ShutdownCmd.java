@@ -26,23 +26,23 @@ import dev.cosgy.jmusicbot.slashcommands.OwnerCommand;
 public class ShutdownCmd extends OwnerCommand {
     private final Bot bot;
 
-    public ShutdownCmd(Bot bot) {
-        this.bot = bot;
-        this.name = "shutdown";
-        this.help = "安全にシャットダウン";
-        this.aliases = bot.getConfig().getAliases(this.name);
-        this.guildOnly = false;
-    }
+public ShutdownCmd(Bot bot) {
+         this.bot = bot;
+         this.name = "shutdown";
+         this.help = "Shut down safely";
+         this.aliases = bot.getConfig().getAliases(this.name);
+         this.guildOnly = false;
+     }
 
-    @Override
-    protected void execute(SlashCommandEvent event) {
-        event.reply(event.getClient().getWarning() + "シャットダウンしています...\n不具合で正常に停止できないことがあります。その場合は強制的にボットを停止して下さい。").queue();
-        bot.shutdown();
-    }
+     @Override
+     protected void execute(SlashCommandEvent event) {
+         event.reply(event.getClient().getWarning() + "Shutdown...\nThere may be a problem that prevents the bot from stopping normally. In that case, please forcefully stop the bot."). queue();
+         bot.shutdown();
+     }
 
-    @Override
-    protected void execute(CommandEvent event) {
-        event.replyWarning("シャットダウンしています...\n不具合で正常に停止できないことがあります。その場合は強制的にボットを停止して下さい。");
-        bot.shutdown();
-    }
+     @Override
+     protected void execute(CommandEvent event) {
+         event.replyWarning("Shutdown...\nThere may be a problem that prevents the bot from stopping normally. In that case, please forcefully stop the bot.");
+         bot.shutdown();
+     }
 }

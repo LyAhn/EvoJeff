@@ -24,50 +24,50 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
 /**
- * @author John Grosh <john.a.grosh@gmail.com>
- */
+  * @author John Grosh <john.a.grosh@gmail.com>
+  */
 public class NowplayingCmd extends MusicCommand {
-    public NowplayingCmd(Bot bot) {
-        super(bot);
-        this.name = "nowplaying";
-        this.help = "現在再生中の曲を表示します";
-        this.aliases = bot.getConfig().getAliases(this.name);
-        this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
-    }
+     public NowplayingCmd(Bot bot) {
+         super(bot);
+         this.name = "nowplaying";
+         this.help = "Display the currently playing song";
+         this.aliases = bot.getConfig().getAliases(this.name);
+         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
+     }
 
-    @Override
-    public void doCommand(CommandEvent event) {
-        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
-        MessageCreateData m = null;
-        try {
-            m = handler.getNowPlaying(event.getJDA());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        if (m == null) {
-            event.reply(handler.getNoMusicPlaying(event.getJDA()));
-            bot.getNowplayingHandler().clearLastNPMessage(event.getGuild());
-        } else {
-            event.reply(m, bot.getNowplayingHandler()::setLastNPMessage);
-        }
-    }
+     @Override
+     public void doCommand(CommandEvent event) {
+         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+         MessageCreateData m = null;
+         try {
+             m = handler.getNowPlaying(event.getJDA());
+         } catch (Exception e) {
+             throw new RuntimeException(e);
+         }
+         if (m == null) {
+             event.reply(handler.getNoMusicPlaying(event.getJDA()));
+             bot.getNowplayingHandler().clearLastNPMessage(event.getGuild());
+         } else {
+             event.reply(m, bot.getNowplayingHandler()::setLastNPMessage);
+         }
+     }
 
-    @Override
-    public void doCommand(SlashCommandEvent event) {
-        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
-        MessageCreateData m = null;
-        try {
-            m = handler.getNowPlaying(event.getJDA());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        event.reply("現在再生中の楽曲を表示します...").queue(h -> h.deleteOriginal().queue());
+     @Override
+     public void doCommand(SlashCommandEvent event) {
+         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+         MessageCreateData m = null;
+         try {
+             m = handler.getNowPlaying(event.getJDA());
+         } catch (Exception e) {
+             throw new RuntimeException(e);
+         }
+         event.reply("Display the currently playing song...").queue(h -> h.deleteOriginal().queue());
 
-        if (m == null) {
-            event.getTextChannel().sendMessage(handler.getNoMusicPlaying(event.getJDA())).queue();
-            bot.getNowplayingHandler().clearLastNPMessage(event.getGuild());
-        } else {
-            event.getTextChannel().sendMessage(m).queue(bot.getNowplayingHandler()::setLastNPMessage);
-        }
-    }
+         if (m == null) {
+             event.getTextChannel().sendMessage(handler.getNoMusicPlaying(event.getJDA())).queue();
+             bot.getNowplayingHandler().clearLastNPMessage(event.getGuild());
+         } else {
+             event.getTextChannel().sendMessage(m).queue(bot.getNowplayingHandler()::setLastNPMessage);
+         }
+     }
 }

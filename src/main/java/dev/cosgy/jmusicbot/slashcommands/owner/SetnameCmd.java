@@ -31,26 +31,26 @@ public class SetnameCmd extends OwnerCommand {
     public SetnameCmd(Bot bot) {
         this.bot = bot;
         this.name = "setname";
-        this.help = "ボットの名前を設定します。";
+        this.help = "Sets the bots name.";
         this.arguments = "<name>";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.guildOnly = false;
 
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.STRING, "name", "新しいボットの名前", true));
-        this.options = options;
-    }
+         options.add(new OptionData(OptionType.STRING, "name", "New bot name", true));
+         this.options = options;
+     }
 
-    @Override
-    protected void execute(SlashCommandEvent event) {
-        try {
-            String oldname = event.getJDA().getSelfUser().getName();
-            event.getJDA().getSelfUser().getManager().setName(event.getOption("name").getAsString()).complete(false);
-            event.reply(event.getClient().getSuccess() + "ボットの名前を`" + oldname + "` から `" + event.getOption("name").getAsString() + "`に変更しました。").queue();
-        } catch (RateLimitedException e) {
-            event.reply(event.getClient().getError() + "名前は1時間に2回しか変更できません。").queue();
-        } catch (Exception e) {
-            event.reply(event.getClient().getError() + " その名前は使用できません。").queue();
-        }
-    }
+     @Override
+     protected void execute(SlashCommandEvent event) {
+         try {
+             String oldname = event.getJDA().getSelfUser().getName();
+             event.getJDA().getSelfUser().getManager().setName(event.getOption("name").getAsString()).complete(false);
+             event.reply(event.getClient().getSuccess() + "Changed the name of the bot from `" + oldname + "` to `" + event.getOption("name").getAsString() + "`. ").queue();
+         } catch (RateLimitedException e) {
+             event.reply(event.getClient().getError() + "Name can only be changed twice per hour.").queue();
+         } catch (Exception e) {
+             event.reply(event.getClient().getError() + "That name is not available.").queue();
+         }
+     }
 }

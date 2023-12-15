@@ -36,99 +36,99 @@ import java.util.concurrent.TimeUnit;
  * @author Michaili K.
  */
 public class ForceRemoveCmd extends DJCommand {
-    public ForceRemoveCmd(Bot bot) {
-        super(bot);
-        this.name = "forceremove";
-        this.help = "指定したユーザーのエントリーを再生待ちから削除します";
-        this.arguments = "<ユーザー>";
-        this.aliases = bot.getConfig().getAliases(this.name);
-        this.beListening = false;
-        this.bePlaying = true;
-        this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
+     public ForceRemoveCmd(Bot bot) {
+         super(bot);
+         this.name = "forceremove";
+         this.help = "Removes the specified user's entry from the queue";
+         this.arguments = "<user>";
+         this.aliases = bot.getConfig().getAliases(this.name);
+         this.beListening = false;
+         this.bePlaying = true;
+         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
 
-        List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.USER, "user", "ユーザー", true));
-        this.options = options;
+         List<OptionData> options = new ArrayList<>();
+         options.add(new OptionData(OptionType.USER, "user", "user", true));
+         this.options = options;
 
-    }
+     }
 
-    @Override
-    public void doCommand(CommandEvent event) {
-        if (event.getArgs().isEmpty()) {
-            event.replyError("ユーザーに言及する必要があります！");
-            return;
-        }
+     @Override
+     public void doCommand(CommandEvent event) {
+         if (event.getArgs().isEmpty()) {
+             event.replyError("User must be mentioned!");
+             return;
+         }
 
-        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
-        if (handler.getQueue().isEmpty()) {
-            event.replyError("再生待ちには何もありません！");
-            return;
-        }
+         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+         if (handler.getQueue().isEmpty()) {
+             event.replyError("There is nothing waiting to be played!");
+             return;
+         }
 
 
-        User target;
-        List<Member> found = FinderUtil.findMembers(event.getArgs(), event.getGuild());
+         User target;
+         List<Member> found = FinderUtil.findMembers(event.getArgs(), event.getGuild());
 
-        if (found.isEmpty()) {
-            event.replyError("ユーザーが見つかりません！");
-            return;
-        } else if (found.size() > 1) {
-            OrderedMenu.Builder builder = new OrderedMenu.Builder();
-            for (int i = 0; i < found.size() && i < 4; i++) {
-                Member member = found.get(i);
-                builder.addChoice("**" + member.getUser().getName() + "**#" + member.getUser().getDiscriminator());
-            }
+         if (found.isEmpty()) {
+             event.replyError("User not found!");
+             return;
+         } else if (found.size() > 1) {
+             OrderedMenu.Builder builder = new OrderedMenu.Builder();
+             for (int i = 0; i < found.size() && i < 4; i++) {
+                 Member member = found.get(i);
+                 builder.addChoice("**" + member.getUser().getName() + "**#" + member.getUser().getDiscriminator());
+             }
 
-            builder
-                    .setSelection((msg, i) -> removeAllEntries(found.get(i - 1).getUser(), event))
-                    .setText("複数のユーザーが見つかりました:")
-                    .setColor(event.getSelfMember().getColor())
-                    .useNumbers()
-                    .setUsers(event.getAuthor())
-                    .useCancelButton(true)
-                    .setCancel((msg) -> {
-                    })
-                    .setEventWaiter(bot.getWaiter())
-                    .setTimeout(1, TimeUnit.MINUTES)
+             builder
+                     .setSelection((msg, i) -> removeAllEntries(found.get(i - 1).getUser(), event))
+                     .setText("Multiple users found:")
+                     .setColor(event.getSelfMember().getColor())
+                     .useNumbers()
+                     .setUsers(event.getAuthor())
+                     .useCancelButton(true)
+                     .setCancel((msg) -> {
+                     })
+                     .setEventWaiter(bot.getWaiter())
+                     .setTimeout(1, TimeUnit.MINUTES)
 
-                    .build().display(event.getChannel());
+                     .build().display(event.getChannel());
 
-            return;
-        } else {
-            target = found.get(0).getUser();
-        }
+             return;
+         } else {
+             target = found.get(0).getUser();
+         }
 
-        removeAllEntries(target, event);
+         removeAllEntries(target, event);
 
-    }
+     }
 
-    @Override
-    public void doCommand(SlashCommandEvent event) {
-        if (!checkDJPermission(event.getClient(), event)) {
-            event.reply(event.getClient().getWarning() + "権限がないため実行できません。").queue();
-            return;
-        }
-        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
-        if (handler.getQueue().isEmpty()) {
-            event.reply(event.getClient().getError() + "再生待ちには何もありません！").queue();
-            return;
-        }
+     @Override
+     public void doCommand(SlashCommandEvent event) {
+         if (!checkDJPermission(event.getClient(), event)) {
+             event.reply(event.getClient().getWarning() + "Cannot execute because you do not have permission.").queue();
+             return;
+         }
+         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+         if (handler.getQueue().isEmpty()) {
+             event.reply(event.getClient().getError() + "Nothing waiting to be played!").queue();
+             return;
+         }
 
-        User target = event.getOption("user").getAsUser();
-        int count = ((AudioHandler) event.getGuild().getAudioManager().getSendingHandler()).getQueue().removeAll(target.getIdLong());
-        if (count == 0) {
-            event.reply(event.getClient().getWarning() + "**" + target.getName() + "** の再生待ちに曲がありません！").queue();
-        } else {
-            event.reply(event.getClient().getSuccess() + "**" + target.getName() + "**#" + target.getDiscriminator() + "から`" + count + "`曲削除しました。").queue();
-        }
-    }
+         User target = event.getOption("user").getAsUser();
+         int count = ((AudioHandler) event.getGuild().getAudioManager().getSendingHandler()).getQueue().removeAll(target.getIdLong());
+         if (count == 0) {
+             event.reply(event.getClient().getWarning() + "**" + target.getName() + "** There are no songs waiting to play!").queue();
+         } else {
+             event.reply(event.getClient().getSuccess() + "**" + target.getName() + "**#" + target.getDiscriminator() + "`" + count + "` song removed from .").queue();
+         }
+     }
 
-    private void removeAllEntries(User target, CommandEvent event) {
-        int count = ((AudioHandler) event.getGuild().getAudioManager().getSendingHandler()).getQueue().removeAll(target.getIdLong());
-        if (count == 0) {
-            event.replyWarning("**" + target.getName() + "** の再生待ちに曲がありません！");
-        } else {
-            event.replySuccess("**" + target.getName() + "**#" + target.getDiscriminator() + "から`" + count + "`曲削除しました。");
-        }
-    }
+     private void removeAllEntries(User target, CommandEvent event) {
+         int count = ((AudioHandler) event.getGuild().getAudioManager().getSendingHandler()).getQueue().removeAll(target.getIdLong());
+         if (count == 0) {
+             event.replyWarning("**" + target.getName() + "** There are no songs waiting to play!");
+         } else {
+             event.replySuccess("**" + target.getName() + "**#" + target.getDiscriminator() + "`" + count + "`Song deleted.");
+         }
+     }
 }

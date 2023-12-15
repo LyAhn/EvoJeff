@@ -64,15 +64,15 @@ public class AloneInVoiceHandler {
             AudioHandler handler = (AudioHandler) guild.getAudioManager().getSendingHandler();
 
             if (bot.getConfig().getAutoStopQueueSave()) {
-                // キャッシュの保存処理
+                // Cash preservation processing
                 CacheLoader cache = bot.getCacheLoader();
                 cache.Save(guild.getId(), handler.getQueue());
-                log.info("再生待ちを保存してボイスチャンネルから退出します。");
-                LastSendTextChannel.SendMessage(guild, ":notes: 再生待ちを保存してボイスチャンネルから退出しました。");
+                log.info("Saves the playback queue and exits the voice channel.");
+                LastSendTextChannel.SendMessage(guild, ":notes: I saved the playback queue and left the voice channel.");
             } else {
-                // キャッシュを保存せずに退出する時の処理
-                log.info("再生待ちを削除してボイスチャンネルから退出します。");
-                LastSendTextChannel.SendMessage(guild, ":notes: 再生待ちを削除してボイスチャンネルから退出しました。");
+                // Processing when exiting without saving cache
+                log.info("Delete the queue and exit the voice channel.");
+                LastSendTextChannel.SendMessage(guild, ":notes: I deleted the queue and left the voice channel.");
             }
 
             handler.stopAndClear();
@@ -88,7 +88,7 @@ public class AloneInVoiceHandler {
 
         Guild guild = event.getEntity().getGuild();
         if (!bot.getPlayerManager().hasHandler(guild)) return;
-        // ステージチャンネルにいる場合は退出しない。
+        // If you are on the stage channel, do not leave.
         if (guild.getAudioManager().getConnectedChannel() != null) {
             if (guild.getAudioManager().getConnectedChannel().getType() == ChannelType.STAGE) return;
         }

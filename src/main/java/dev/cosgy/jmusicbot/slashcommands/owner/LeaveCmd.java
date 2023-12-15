@@ -27,29 +27,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LeaveCmd extends OwnerCommand {
-    private final Bot bot;
+     private final Bot bot;
 
-    public LeaveCmd(Bot bot) {
-        this.bot = bot;
-        this.name = "leave";
-        List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.STRING, "serverid", "サーバーID", true));
-        this.options = options;
-    }
+     public LeaveCmd(Bot bot) {
+         this.bot = bot;
+         this.name = "leave";
+         List<OptionData> options = new ArrayList<>();
+         options.add(new OptionData(OptionType.STRING, "serverid", "server ID", true));
+         this.options = options;
+     }
 
-    @Override
-    protected void execute(SlashCommandEvent event) {
-        String id = event.getOption("serverid").getAsString();
-        event.getJDA().getGuildById(id).leave().queue();
-    }
+     @Override
+     protected void execute(SlashCommandEvent event) {
+         String id = event.getOption("serverid").getAsString();
+         event.getJDA().getGuildById(id).leave().queue();
+     }
 
-    @Override
-    protected void execute(CommandEvent event) {
-        if (event.getArgs().isEmpty()) {
-            event.reply(event.getClient().getError() + "役割の名前、またはNONEなどを付けてください。");
-            return;
-        }
+     @Override
+     protected void execute(CommandEvent event) {
+         if (event.getArgs().isEmpty()) {
+             event.reply(event.getClient().getError() + "Please provide a role name or something like NONE.");
+             return;
+         }
 
-        event.getJDA().getGuildById(event.getArgs()).leave().queue();
-    }
+         event.getJDA().getGuildById(event.getArgs()).leave().queue();
+     }
 }

@@ -82,7 +82,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
     }
 
     public void addTrackIfRepeat(AudioTrack track) {
-        // リピートモードの場合は、キューの最後にトラックを追加します
+        // If in repeat mode, add the track to the end of the queue
         RepeatMode mode = manager.getBot().getSettingsManager().getSettings(guildId).getRepeatMode();
         if (mode != RepeatMode.OFF) {
             queue.add(new QueuedTrack(track.makeClone(), track.getUserData(RequestMetadata.class)));
@@ -151,7 +151,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         RepeatMode repeatMode = manager.getBot().getSettingsManager().getSettings(guildId).getRepeatMode();
 
-        // もしも楽曲再生が通常通り終了し、リピートモードが有効(!OFF)ならばキューに再追加する
+        // If the song finishes playing normally and repeat mode is enabled (!OFF), it will be re-added to the queue.
         if (endReason == AudioTrackEndReason.FINISHED && repeatMode != RepeatMode.OFF) {
             // in RepeatMode.ALL
             if (repeatMode == RepeatMode.ALL) {
@@ -195,7 +195,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
             Guild guild = guild(jda);
             AudioTrack track = audioPlayer.getPlayingTrack();
             MessageCreateBuilder mb = new MessageCreateBuilder();
-            mb.addContent(FormatUtil.filter(manager.getBot().getConfig().getSuccess() + " **" + guild.getSelfMember().getVoiceState().getChannel().getAsMention() + "**で、再生中です..."));
+            mb.addContent(FormatUtil.filter(manager.getBot().getConfig().getSuccess() + " **" + guild.getSelfMember().getVoiceState().getChannel().getAsMention() + "**Now playing..."));
             EmbedBuilder eb = new EmbedBuilder();
             eb.setColor(guild.getSelfMember().getColor());
             RequestMetadata rm = getRequestMetadata();
@@ -245,7 +245,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
                 }
 
                 if (track.getInfo().author != null && !track.getInfo().author.isEmpty())
-                    eb.setFooter("出典: " + track.getInfo().author, null);
+                    eb.setFooter("source: " + track.getInfo().author, null);
 
                 double progress = (double) audioPlayer.getPlayingTrack().getPosition() / track.getDuration();
                 eb.setDescription((audioPlayer.isPaused() ? JMusicBot.PAUSE_EMOJI : JMusicBot.PLAY_EMOJI)
@@ -294,9 +294,9 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
     public MessageCreateData getNoMusicPlaying(JDA jda) {
         Guild guild = guild(jda);
         return new MessageCreateBuilder()
-                .setContent(FormatUtil.filter(manager.getBot().getConfig().getSuccess() + " **音楽を再生していません。**"))
+                .setContent(FormatUtil.filter(manager.getBot().getConfig().getSuccess() + " **Not playing music**"))
                 .setEmbeds(new EmbedBuilder()
-                        .setTitle("音楽を再生していません。")
+                        .setTitle("Not playing music")
                         .setDescription(JMusicBot.STOP_EMOJI + " " + FormatUtil.progressBar(-1) + " " + FormatUtil.volumeIcon(audioPlayer.getVolume()))
                         .setColor(guild.getSelfMember().getColor())
                         .build())
@@ -308,22 +308,22 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler 
             long userid = getRequestMetadata().getOwner();
             AudioTrack track = audioPlayer.getPlayingTrack();
 
-            // 幻想郷ラジオを再生しているか確認
+            // Check if Gensokyo Radio is playing.
             if (track.getInfo().uri.matches(".*stream.gensokyoradio.net/.*")) {
-                return "**幻想郷ラジオ** [" + (userid == 0 ? "自動再生" : "<@" + userid + ">") + "]"
+                return "**Gensokyo Radio** [" + (userid == 0 ? "auto play" : "<@" + userid + ">") + "]"
                         + "\n" + (audioPlayer.isPaused() ? JMusicBot.PAUSE_EMOJI : JMusicBot.PLAY_EMOJI) + " "
                         + "[LIVE] "
                         + FormatUtil.volumeIcon(audioPlayer.getVolume());
             }
 
             String title = track.getInfo().title;
-            if (title == null || title.equals("不明なタイトル"))
+            if (title == null || title.equals("unknown title"))
                 title = track.getInfo().uri;
-            return "**" + title + "** [" + (userid == 0 ? "自動再生" : "<@" + userid + ">") + "]"
+            return "**" + title + "** [" + (userid == 0 ? "auto play" : "<@" + userid + ">") + "]"
                     + "\n" + (audioPlayer.isPaused() ? JMusicBot.PAUSE_EMOJI : JMusicBot.PLAY_EMOJI) + " "
                     + "[" + FormatUtil.formatTime(track.getDuration()) + "] "
                     + FormatUtil.volumeIcon(audioPlayer.getVolume());
-        } else return "音楽を再生していません" + JMusicBot.STOP_EMOJI + " " + FormatUtil.volumeIcon(audioPlayer.getVolume());
+        } else return "Not playing music" + JMusicBot.STOP_EMOJI + " " + FormatUtil.volumeIcon(audioPlayer.getVolume());
     }
 
     // Audio Send Handler methods

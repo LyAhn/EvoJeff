@@ -28,49 +28,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SkipratioCmd extends AdminCommand {
-    public SkipratioCmd(Bot bot) {
-        this.name = "setskip";
-        this.help = "サーバー固有のスキップ率を設定";
-        this.arguments = "<0 - 100>";
-        this.aliases = bot.getConfig().getAliases(this.name);
+     public SkipratioCmd(Bot bot) {
+         this.name = "setskip";
+         this.help = "Set server-specific skip rate";
+         this.arguments = "<0 - 100>";
+         this.aliases = bot.getConfig().getAliases(this.name);
 
-        List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.INTEGER, "percent", "スキップ率", true));
+         List<OptionData> options = new ArrayList<>();
+         options.add(new OptionData(OptionType.INTEGER, "percent", "skip rate", true));
 
-        this.options = options;
-    }
+         this.options = options;
+     }
 
-    @Override
-    protected void execute(SlashCommandEvent event) {
-        try {
-            int val = Integer.parseInt(event.getOption("percent").getAsString());
-            if (val < 0 || val > 100) {
-                event.reply(event.getClient().getError() + "値は、0から100の間でなければなりません。").queue();
-                return;
-            }
-            Settings s = event.getClient().getSettingsFor(event.getGuild());
-            s.setSkipRatio(val / 100.0);
+     @Override
+     protected void execute(SlashCommandEvent event) {
+         try {
+             int val = Integer.parseInt(event.getOption("percent").getAsString());
+             if (val < 0 || val > 100) {
+                 event.reply(event.getClient().getError() + "The value must be between 0 and 100.").queue();
+                 return;
+             }
+             Settings s = event.getClient().getSettingsFor(event.getGuild());
+             s.setSkipRatio(val / 100.0);
 
-            event.reply(event.getClient().getSuccess() + "*" + event.getGuild().getName() + "*のリスナーのスキップ率を" + val + "%に設定しました。").queue();
-        } catch (NumberFormatException ex) {
-            event.reply(event.getClient().getError() + "0～100の整数を入れてください（デフォルトは55）。この数値は、曲をスキップするために投票しなければならないリスニングユーザーの割合です。").queue();
-        }
-    }
+             event.reply(event.getClient().getSuccess() + "*" + event.getGuild().getName() + "Set listener skip rate for * to" + val + "%."). queue();
+         } catch (NumberFormatException ex) {
+             event.reply(event.getClient().getError() + "Enter an integer between 0 and 100 (default 55). This number is the percentage of listening users who must vote to skip the song .").queue();
+         }
+     }
 
-    @Override
-    protected void execute(CommandEvent event) {
-        try {
-            int val = Integer.parseInt(event.getArgs().endsWith("%") ? event.getArgs().substring(0, event.getArgs().length() - 1) : event.getArgs());
-            if (val < 0 || val > 100) {
-                event.replyError("値は、0から100の間でなければなりません。");
-                return;
-            }
-            Settings s = event.getClient().getSettingsFor(event.getGuild());
-            s.setSkipRatio(val / 100.0);
+     @Override
+     protected void execute(CommandEvent event) {
+         try {
+             int val = Integer.parseInt(event.getArgs().endsWith("%") ? event.getArgs().substring(0, event.getArgs().length() - 1) : event.getArgs());
+             if (val < 0 || val > 100) {
+                 event.replyError("Value must be between 0 and 100.");
+                 return;
+             }
+             Settings s = event.getClient().getSettingsFor(event.getGuild());
+             s.setSkipRatio(val / 100.0);
 
-            event.replySuccess("*" + event.getGuild().getName() + "*のリスナーのスキップ率を" + val + "%に設定しました。");
-        } catch (NumberFormatException ex) {
-            event.replyError("0～100の整数を入れてください（デフォルトは55）。この数値は、曲をスキップするために投票しなければならないリスニングユーザーの割合です。");
-        }
-    }
+             event.replySuccess("*" + event.getGuild().getName() + "Set the listener skip rate for * to" + val + "%.");
+         } catch (NumberFormatException ex) {
+             event.replyError("Please enter an integer between 0 and 100 (default 55). This number is the percentage of listening users who must vote to skip the song.");
+         }
+     }
 }

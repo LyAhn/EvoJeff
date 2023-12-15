@@ -25,42 +25,42 @@ import dev.cosgy.jmusicbot.slashcommands.DJCommand;
 import net.dv8tion.jda.api.entities.User;
 
 public class NextCmd extends DJCommand {
-    public NextCmd(Bot bot) {
-        super(bot);
-        this.name = "next";
-        this.help = "リピートモードが有効な場合、再生待ちから削除せずに現在の曲をスキップします";
-        this.aliases = bot.getConfig().getAliases(this.name);
-        this.bePlaying = true;
-    }
+     public NextCmd(Bot bot) {
+         super(bot);
+         this.name = "next";
+         this.help = "If repeat mode is enabled, skip the current song without removing it from the queue";
+         this.aliases = bot.getConfig().getAliases(this.name);
+         this.bePlaying = true;
+     }
 
-    @Override
-    public void doCommand(CommandEvent event) {
-        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
-        User u = event.getJDA().getUserById(handler.getRequestMetadata().user.id);
+     @Override
+     public void doCommand(CommandEvent event) {
+         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+         User u = event.getJDA().getUserById(handler.getRequestMetadata().user.id);
 
-        AudioTrack track = handler.getPlayer().getPlayingTrack();
-        handler.addTrackIfRepeat(track);
+         AudioTrack track = handler.getPlayer().getPlayingTrack();
+         handler.addTrackIfRepeat(track);
 
-        event.reply(event.getClient().getSuccess() + " **" + (handler.getPlayer().getPlayingTrack().getInfo().uri.contains("https://stream.gensokyoradio.net/") ? "幻想郷ラジオ" : handler.getPlayer().getPlayingTrack().getInfo().title)
-                + "**をスキップしました。 (" + (u == null ? "誰か" : "**" + u.getName() + "**") + "がリクエストしました。)");
-        handler.getPlayer().stopTrack();
-    }
+         event.reply(event.getClient().getSuccess() + " **" + (handler.getPlayer().getPlayingTrack().getInfo().uri.contains("https://stream.gensokyoradio.net/" ) ? "Gensokyo Radio" : handler.getPlayer().getPlayingTrack().getInfo().title)
+                 + "**Skipped. (" + (u == null ? "Someone" : "**" + u.getName() + "**") + "Requested.)");
+         handler.getPlayer().stopTrack();
+     }
 
-    @Override
-    public void doCommand(SlashCommandEvent event) {
-        if (!checkDJPermission(event.getClient(), event)) {
-            event.reply(event.getClient().getWarning() + "権限がないため実行できません。").queue();
-            return;
-        }
-        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
-        User u = event.getJDA().getUserById(handler.getRequestMetadata().user.id);
+     @Override
+     public void doCommand(SlashCommandEvent event) {
+         if (!checkDJPermission(event.getClient(), event)) {
+             event.reply(event.getClient().getWarning() + "Cannot execute because you do not have permission.").queue();
+             return;
+         }
+         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+         User u = event.getJDA().getUserById(handler.getRequestMetadata().user.id);
 
-        AudioTrack track = handler.getPlayer().getPlayingTrack();
-        handler.addTrackIfRepeat(track);
+         AudioTrack track = handler.getPlayer().getPlayingTrack();
+         handler.addTrackIfRepeat(track);
 
-        event.reply(event.getClient().getSuccess() + " **" + (handler.getPlayer().getPlayingTrack().getInfo().uri.contains("https://stream.gensokyoradio.net/") ? "幻想郷ラジオ" : handler.getPlayer().getPlayingTrack().getInfo().title) +
-                handler.getPlayer().getPlayingTrack().getInfo().title
-                + "**をスキップしました。 (" + (u == null ? "誰か" : "**" + u.getName() + "**") + "がリクエストしました。)").queue();
-        handler.getPlayer().stopTrack();
-    }
+         event.reply(event.getClient().getSuccess() + " **" + (handler.getPlayer().getPlayingTrack().getInfo().uri.contains("https://stream.gensokyoradio.net/" ) ? "Gensokyo Radio" : handler.getPlayer().getPlayingTrack().getInfo().title) +
+                 handler.getPlayer().getPlayingTrack().getInfo().title
+                 + "**Skipped. (" + (u == null ? "Someone" : "**" + u.getName() + "**") + "Requested.)").queue ();
+         handler.getPlayer().stopTrack();
+     }
 }

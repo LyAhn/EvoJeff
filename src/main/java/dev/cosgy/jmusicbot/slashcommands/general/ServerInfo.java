@@ -12,7 +12,7 @@ import java.util.Objects;
 public class ServerInfo extends SlashCommand {
     public ServerInfo(Bot bot) {
         this.name = "serverinfo";
-        this.help = "サーバーに関する情報を表示します";
+        this.help = "Display information about the server";
         this.guildOnly = true;
         this.category = new Category("General");
         this.aliases = bot.getConfig().getAliases(this.name);
@@ -51,20 +51,20 @@ public class ServerInfo extends SlashCommand {
 
         EmbedBuilder eb = new EmbedBuilder();
 
-        eb.setAuthor("サーバー " + GuildName + " の情報", null, GuildIconURL);
+        eb.setAuthor("Server " + GuildName + " information", null, GuildIconURL);
 
-        eb.addField("サーバーID", GuildId, true);
-        eb.addField("サーバー第一言語", GuildLocation, true);
-        eb.addField("サーバーオーナー", GuildOwner, true);
-        eb.addField("メンバー数", GuildMember, true);
-        eb.addField("役職数", GuildRolesCount, true);
-        eb.addField("カテゴリの数", GuildCategoryCount, true);
-        eb.addField("テキストチャンネルの数", GuildTextChannelCount, true);
-        eb.addField("ボイスチャンネルの数", GuildVoiceChannelCount, true);
-        eb.addField("ステージチャンネルの数", GuildStageChannelCount, true);
-        eb.addField("フォーラムチャンネルの数", GuildForumChannelCount, true);
+        eb.addField("Server ID", GuildId, true);
+        eb.addField("Server First Language", GuildLocation, true);
+        eb.addField("Server Owner", GuildOwner, true);
+        eb.addField("Number of members", GuildMember, true);
+        eb.addField("Number of Roles", GuildRolesCount, true);
+        eb.addField("Number of categories", GuildCategoryCount, true);
+        eb.addField("Number of text channels", GuildTextChannelCount, true);
+        eb.addField("Number of voice channels", GuildVoiceChannelCount, true);
+        eb.addField("Number of stage channels", GuildStageChannelCount, true);
+        eb.addField("Number of forum channels", GuildForumChannelCount, true);
 
-        eb.setFooter("サーバー作成日時: " + GuildCreatedDate, null);
+        eb.setFooter("Server creation date and time: " + GuildCreatedDate, null);
 
         event.replyEmbeds(eb.build()).queue();
     }
@@ -101,21 +101,21 @@ public class ServerInfo extends SlashCommand {
 
         EmbedBuilder eb = new EmbedBuilder();
 
-        eb.setAuthor("サーバー " + GuildName + " の情報", null, GuildIconURL);
+eb.setAuthor("Server " + GuildName + " information", null, GuildIconURL);
 
-        eb.addField("サーバーID", GuildId, true);
-        eb.addField("サーバー第一言語", GuildLocation, true);
-        eb.addField("サーバーオーナー", GuildOwner, true);
-        eb.addField("メンバー数", GuildMember, true);
-        eb.addField("役職数", GuildRolesCount, true);
-        eb.addField("カテゴリの数", GuildCategoryCount, true);
-        eb.addField("テキストチャンネルの数", GuildTextChannelCount, true);
-        eb.addField("ボイスチャンネルの数", GuildVoiceChannelCount, true);
-        eb.addField("ステージチャンネルの数", GuildStageChannelCount, true);
-        eb.addField("フォーラムチャンネルの数", GuildForumChannelCount, true);
+         eb.addField("Server ID", GuildId, true);
+         eb.addField("Server First Language", GuildLocation, true);
+         eb.addField("Server Owner", GuildOwner, true);
+         eb.addField("Number of members", GuildMember, true);
+         eb.addField("Number of Roles", GuildRolesCount, true);
+         eb.addField("Number of categories", GuildCategoryCount, true);
+         eb.addField("Number of text channels", GuildTextChannelCount, true);
+         eb.addField("Number of voice channels", GuildVoiceChannelCount, true);
+         eb.addField("Number of stage channels", GuildStageChannelCount, true);
+         eb.addField("Number of forum channels", GuildForumChannelCount, true);
 
-        eb.setFooter("サーバー作成日時: " + GuildCreatedDate, null);
+         eb.setFooter("Server creation date and time: " + GuildCreatedDate, null);
 
-        event.getChannel().sendMessageEmbeds(eb.build()).queue();
-    }
+         event.getChannel().sendMessageEmbeds(eb.build()).queue();
+     }
 }

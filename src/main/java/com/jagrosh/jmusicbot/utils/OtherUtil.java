@@ -39,19 +39,19 @@ import java.nio.file.Paths;
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class OtherUtil {
-    public final static String NEW_VERSION_AVAILABLE = "利用可能なJMusicBot JPの新しいバージョンがあります!\n"
-            + "現在のバージョン: %s\n"
-            + "最新のバージョン: %s\n\n"
-            + " https://github.com/Cosgy-Dev/MusicBot-JP-java/releases/latest から最新バージョンをダウンロードして下さい。";
+    public final static String NEW_VERSION_AVAILABLE = "There is a new version of Jeff available!\n"
+            + "Current version: %s\n"
+            + "New version: %s\n\n"
+            + " https://github.com/LyAh/EvoJeff/releases/latest to get the latest release";
     private final static String WINDOWS_INVALID_PATH = "c:\\windows\\system32\\";
 
     /**
-     * 文字列からパスを取得します
-     * また、system32で起動しようとするWindowsの傾向を修正します
-     * ボットがこのパスにアクセスしようとすると、代わりにjarファイルの場所から開始されます。
-     *
-     * @param path 文字列パス
-     * @return the パスオブジェクト
+     * gets a Path from a String
+     * also fixes the windows tendency to try to start in system32
+     * any time the bot tries to access this path, it will instead start in the location of the jar file
+     * 
+     * @param path the string path
+     * @return the Path object
      */
     public static Path getPath(String path) {
         Path result = Paths.get(path);
@@ -67,11 +67,11 @@ public class OtherUtil {
     }
 
     /**
-     * jarからリソースを文字列としてロードします
-     *
-     * @param clazz クラスベースオブジェクト
-     * @param name  リソースの名前
-     * @return リソースの内容を含む文字列
+     * Loads a resource from the jar as a string
+     * 
+     * @param clazz class base object
+     * @param name name of resource
+     * @return string containing the contents of the resource
      */
     public static String loadResource(Object clazz, String name) {
         try {
@@ -92,10 +92,10 @@ public class OtherUtil {
     }
 
     /**
-     * URLから画像データをロードします
-     *
-     * @param url 画像のURL
-     * @return URLのinputstream
+     * Loads image data from a URL
+     * 
+     * @param url url of image
+     * @return inputstream of url
      */
     public static InputStream imageFromUrl(String url) {
         if (url == null)
@@ -111,8 +111,8 @@ public class OtherUtil {
     }
 
     /**
-     * 文字列からアクティビティを解析します
-     *
+     * Parses an activity from a string
+     * 
      * @param game the game, including the action such as 'playing' or 'watching'
      * @return the parsed activity
      */
@@ -167,13 +167,13 @@ public class OtherUtil {
         if (JMusicBot.class.getPackage() != null && JMusicBot.class.getPackage().getImplementationVersion() != null)
             return JMusicBot.class.getPackage().getImplementationVersion();
         else
-            return "不明";
+            return "Unknown";
     }
 
     public static String getLatestVersion() {
         try {
             Response response = new OkHttpClient.Builder().build()
-                    .newCall(new Request.Builder().get().url("https://api.github.com/repos/Cosgy-Dev/MusicBot-JP-java/releases/latest").build())
+                    .newCall(new Request.Builder().get().url("https://api.github.com/repos/LyAhn/EvoJeff/releases/latest").build())
                     .execute();
             ResponseBody body = response.body();
             if (body != null) {

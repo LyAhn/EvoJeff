@@ -27,47 +27,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author John Grosh <john.a.grosh@gmail.com>
- */
+  * @author John Grosh <john.a.grosh@gmail.com>
+  */
 public class SetstatusCmd extends OwnerCommand {
-    public SetstatusCmd(Bot bot) {
-        this.name = "setstatus";
-        this.help = "ボットが表示するステータスを設定します";
-        this.arguments = "<status>";
-        this.aliases = bot.getConfig().getAliases(this.name);
-        this.guildOnly = false;
-        List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.STRING, "status", "次のいずれかのステータス：ONLINE, IDLE, DND, INVISIBLE", true));
-        this.options = options;
-    }
+     public SetstatusCmd(Bot bot) {
+         this.name = "setstatus";
+         this.help = "Set the status displayed by the bot";
+         this.arguments = "<status>";
+         this.aliases = bot.getConfig().getAliases(this.name);
+         this.guildOnly = false;
+         List<OptionData> options = new ArrayList<>();
+         options.add(new OptionData(OptionType.STRING, "status", "Status is one of the following: ONLINE, IDLE, DND, INVISIBLE", true));
+         this.options = options;
+     }
 
-    @Override
-    protected void execute(SlashCommandEvent event) {
-        try {
-            OnlineStatus status = OnlineStatus.fromKey(event.getOption("status").getAsString());
-            if (status == OnlineStatus.UNKNOWN) {
-                event.reply(event.getClient().getError() + "次のいずれかのステータスを含めてください。 :`ONLINE`, `IDLE`, `DND`, `INVISIBLE`").queue();
-            } else {
-                event.getJDA().getPresence().setStatus(status);
-                event.reply(event.getClient().getSuccess() + "ステータスを`" + status.getKey().toUpperCase() + "`に設定しました。").queue();
-            }
-        } catch (Exception e) {
-            event.reply(event.getClient().getError() + " ステータスを設定できませんでした。").queue();
-        }
-    }
+     @Override
+     protected void execute(SlashCommandEvent event) {
+         try {
+             OnlineStatus status = OnlineStatus.fromKey(event.getOption("status").getAsString());
+             if (status == OnlineStatus.UNKNOWN) {
+                 event.reply(event.getClient().getError() + "Please include the status of one of the following: :`ONLINE`, `IDLE`, `DND`, `INVISIBLE`").queue();
+             } else {
+                 event.getJDA().getPresence().setStatus(status);
+                 event.reply(event.getClient().getSuccess() + "Status set to `" + status.getKey().toUpperCase() + "`).").queue();
+             }
+         } catch (Exception e) {
+             event.reply(event.getClient().getError() + "Could not set status.").queue();
+         }
+     }
 
-    @Override
-    protected void execute(CommandEvent event) {
-        try {
-            OnlineStatus status = OnlineStatus.fromKey(event.getArgs());
-            if (status == OnlineStatus.UNKNOWN) {
-                event.replyError("次のいずれかのステータスを含めてください。 :`ONLINE`, `IDLE`, `DND`, `INVISIBLE`");
-            } else {
-                event.getJDA().getPresence().setStatus(status);
-                event.replySuccess("ステータスを`" + status.getKey().toUpperCase() + "`に設定しました。");
-            }
-        } catch (Exception e) {
-            event.reply(event.getClient().getError() + " ステータスを設定できませんでした。");
-        }
-    }
+     @Override
+     protected void execute(CommandEvent event) {
+         try {
+             OnlineStatus status = OnlineStatus.fromKey(event.getArgs());
+             if (status == OnlineStatus.UNKNOWN) {
+                 event.replyError("Please include one of the following statuses: :`ONLINE`, `IDLE`, `DND`, `INVISIBLE`);
+             } else {
+                 event.getJDA().getPresence().setStatus(status);
+                 event.replySuccess("Status set to `" + status.getKey().toUpperCase() + "`.");
+             }
+         } catch (Exception e) {
+             event.reply(event.getClient().getError() + "Could not set status.");
+         }
+     }
 }

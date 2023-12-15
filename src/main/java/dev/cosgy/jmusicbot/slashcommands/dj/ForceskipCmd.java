@@ -26,33 +26,33 @@ import dev.cosgy.jmusicbot.slashcommands.DJCommand;
  * @author John Grosh <john.a.grosh@gmail.com>
  */
 public class ForceskipCmd extends DJCommand {
-    public ForceskipCmd(Bot bot) {
-        super(bot);
-        this.name = "forceskip";
-        this.help = "現在の曲をスキップします";
-        this.aliases = bot.getConfig().getAliases(this.name);
-        this.bePlaying = true;
-    }
+     public ForceskipCmd(Bot bot) {
+         super(bot);
+         this.name = "forceskip";
+         this.help = "Skip current song";
+         this.aliases = bot.getConfig().getAliases(this.name);
+         this.bePlaying = true;
+     }
 
-    @Override
-    public void doCommand(CommandEvent event) {
-        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
-        RequestMetadata rm = handler.getRequestMetadata();
-        event.reply(event.getClient().getSuccess() + "**" + handler.getPlayer().getPlayingTrack().getInfo().title
-                + "** " + (rm.getOwner() == 0L ? "(自動再生)" : "(**" + rm.user.username + "**がリクエスト)"));
-        handler.getPlayer().stopTrack();
-    }
+     @Override
+     public void doCommand(CommandEvent event) {
+         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+         RequestMetadata rm = handler.getRequestMetadata();
+         event.reply(event.getClient().getSuccess() + "**" + handler.getPlayer().getPlayingTrack().getInfo().title
+                 + "** " + (rm.getOwner() == 0L ? "(Autoplay)" : "(**" + rm.user.username + "Requested by **)"));
+         handler.getPlayer().stopTrack();
+     }
 
-    @Override
-    public void doCommand(SlashCommandEvent event) {
-        if (!checkDJPermission(event.getClient(), event)) {
-            event.reply(event.getClient().getWarning() + "権限がないため実行できません。").queue();
-            return;
-        }
-        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
-        RequestMetadata rm = handler.getRequestMetadata();
-        event.reply(event.getClient().getSuccess() + "**" + handler.getPlayer().getPlayingTrack().getInfo().title
-                + "** " + (rm.getOwner() == 0L ? "(自動再生)" : "(**" + rm.user.username + "**がリクエスト)")).queue();
-        handler.getPlayer().stopTrack();
-    }
+     @Override
+     public void doCommand(SlashCommandEvent event) {
+         if (!checkDJPermission(event.getClient(), event)) {
+             event.reply(event.getClient().getWarning() + "Cannot execute because you do not have permission.").queue();
+             return;
+         }
+         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+         RequestMetadata rm = handler.getRequestMetadata();
+         event.reply(event.getClient().getSuccess() + "**" + handler.getPlayer().getPlayingTrack().getInfo().title
+                 + "** " + (rm.getOwner() == 0L ? "(Autoplay)" : "(**" + rm.user.username + "** requested)")).queue();
+         handler.getPlayer().stopTrack();
+     }
 }

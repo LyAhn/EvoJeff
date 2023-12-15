@@ -16,81 +16,81 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * @author Kosugi_kun
- */
+  * @author Kosugi_kun
+  */
 public class InfoCommand extends SlashCommand {
 
-    public InfoCommand(Bot bot) {
-        this.name = "info";
-        this.help = "メンテナンス情報をお知らせします。";
-        this.guildOnly = false;
-    }
+     public InfoCommand(Bot bot) {
+         this.name = "info";
+         this.help = "We will notify you of maintenance information.";
+         this.guildOnly = false;
+     }
 
-    @Override
-    protected void execute(SlashCommandEvent event) {
-        Calendar Now = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date NowTime = Now.getTime();
-        event.reply("お知らせを受信中...").queue(m -> {
-            try {
-                if (MaintenanceInfo.Verification()) {
-                    MaintenanceInfo InfoResult = MaintenanceInfo.GetInfo();
+     @Override
+     protected void execute(SlashCommandEvent event) {
+         Calendar Now = Calendar.getInstance();
+         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+         Date NowTime = Now.getTime();
+         event.reply("Receiving notifications...").queue(m -> {
+             try {
+                 if (MaintenanceInfo.Verification()) {
+                     MaintenanceInfo InfoResult = MaintenanceInfo.GetInfo();
 
-                    MessageCreateBuilder builder = new MessageCreateBuilder().addContent("**").addContent(InfoResult.Title).addContent("**");
-                    EmbedBuilder ebuilder = new EmbedBuilder()
-                            .setColor(Color.orange)
-                            .setDescription(InfoResult.Content);
-                    if (!InfoResult.StartTime.equals("")) {
-                        ebuilder.addField("開始時刻:", InfoResult.StartTime, false);
-                    }
-                    if (!InfoResult.EndTime.equals("")) {
-                        ebuilder.addField("終了時刻:", InfoResult.EndTime, false);
-                    }
-                    ebuilder.addField("更新日時:", InfoResult.LastUpdate, false)
-                            .addField("現在時刻", sdf.format(NowTime), false)
-                            .setFooter("※メンテナンス期間は予定なく変更する場合があります。", null);
-                    m.editOriginalEmbeds(ebuilder.build()).queue();
-                } else {
-                    m.editOriginal("お知らせはありません。").queue();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+                     MessageCreateBuilder builder = new MessageCreateBuilder().addContent("**").addContent(InfoResult.Title).addContent("**");
+                     EmbedBuilder ebuilder = new EmbedBuilder()
+                             .setColor(Color.orange)
+                             .setDescription(InfoResult.Content);
+                     if (!InfoResult.StartTime.equals("")) {
+                         ebuilder.addField("Start Time:", InfoResult.StartTime, false);
+                     }
+                     if (!InfoResult.EndTime.equals("")) {
+                         ebuilder.addField("End Time:", InfoResult.EndTime, false);
+                     }
+                     ebuilder.addField("Updated:", InfoResult.LastUpdate, false)
+                             .addField("Current time", sdf.format(NowTime), false)
+                             .setFooter("*The maintenance period is subject to change without notice.", null);
+                     m.editOriginalEmbeds(ebuilder.build()).queue();
+                 } else {
+                     m.editOriginal("There are no notifications.").queue();
+                 }
+             } catch (IOException e) {
+                 e.printStackTrace();
+             }
+         });
 
-    }
+     }
 
-    @Override
-    protected void execute(CommandEvent event) {
-        Calendar Now = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date NowTime = Now.getTime();
-        Message m = event.getChannel().sendMessage("お知らせを受信中...").complete();
-        try {
-            if (MaintenanceInfo.Verification()) {
-                MaintenanceInfo InfoResult = MaintenanceInfo.GetInfo();
+     @Override
+     protected void execute(CommandEvent event) {
+         Calendar Now = Calendar.getInstance();
+         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+         Date NowTime = Now.getTime();
+         Message m = event.getChannel().sendMessage("Receiving notifications...").complete();
+         try {
+             if (MaintenanceInfo.Verification()) {
+                 MaintenanceInfo InfoResult = MaintenanceInfo.GetInfo();
 
-                MessageCreateBuilder builder = new MessageCreateBuilder().addContent("**").addContent(InfoResult.Title).addContent("**");
-                EmbedBuilder ebuilder = new EmbedBuilder()
-                        .setColor(Color.orange)
-                        .setDescription(InfoResult.Content);
-                if (!InfoResult.StartTime.equals("")) {
-                    ebuilder.addField("開始時刻:", InfoResult.StartTime, false);
-                }
-                if (!InfoResult.EndTime.equals("")) {
-                    ebuilder.addField("終了時刻:", InfoResult.EndTime, false);
-                }
-                ebuilder.addField("更新日時:", InfoResult.LastUpdate, false)
-                        .addField("現在時刻", sdf.format(NowTime), false)
-                        .setFooter("※メンテナンス期間は予定なく変更する場合があります。", null);
-                m.editMessageEmbeds(ebuilder.build()).queue();
+                 MessageCreateBuilder builder = new MessageCreateBuilder().addContent("**").addContent(InfoResult.Title).addContent("**");
+                 EmbedBuilder ebuilder = new EmbedBuilder()
+                         .setColor(Color.orange)
+                         .setDescription(InfoResult.Content);
+                 if (!InfoResult.StartTime.equals("")) {
+                     ebuilder.addField("Start Time:", InfoResult.StartTime, false);
+                 }
+                 if (!InfoResult.EndTime.equals("")) {
+                     ebuilder.addField("End Time:", InfoResult.EndTime, false);
+                 }
+                 ebuilder.addField("Updated:", InfoResult.LastUpdate, false)
+                         .addField("Current time", sdf.format(NowTime), false)
+                         .setFooter("*The maintenance period is subject to change without notice.", null);
+                 m.editMessageEmbeds(ebuilder.build()).queue();
 
-            } else {
-                m.editMessage("お知らせはありません。").queue();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+             } else {
+                 m.editMessage("There are no notifications.").queue();
+             }
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
 
-    }
+     }
 }

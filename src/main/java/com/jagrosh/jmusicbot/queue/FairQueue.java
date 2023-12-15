@@ -113,11 +113,11 @@ public class FairQueue<T extends Queueable> {
     }
 
     /**
-     * アイテムをリスト内の別の位置に移動します
+     * Move the item to another position in the list
      *
-     * @param from アイテムの位置
-     * @param to   アイテムの新しい位置
-     * @return the 移動したアイテム
+     * @param from item position
+     * @param to position of item
+     * @return the moved item
      */
     public T moveItem(int from, int to) {
         T item = list.remove(from);

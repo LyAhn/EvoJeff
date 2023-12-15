@@ -27,70 +27,70 @@ import java.util.List;
 import java.util.Objects;
 
 public class HelpCmd extends SlashCommand {
-    public Bot bot;
+     public Bot bot;
 
-    public HelpCmd(Bot bot) {
-        this.bot = bot;
-        this.name = "help";
-        this.help = "コマンド一覧を表示します。";
-        this.aliases = bot.getConfig().getAliases(this.name);
-    }
+     public HelpCmd(Bot bot) {
+         this.bot = bot;
+         this.name = "help";
+         this.help = "Display a list of commands.";
+         this.aliases = bot.getConfig().getAliases(this.name);
+     }
 
-    @Override
-    protected void execute(SlashCommandEvent event) {
-        StringBuilder builder = new StringBuilder("**" + event.getJDA().getSelfUser().getName() + "** コマンド一覧:\n");
-        Category category = null;
-        List<Command> commands = event.getClient().getCommands();
-        for (Command command : commands) {
-            if (!command.isHidden() && (!command.isOwnerCommand() || event.getMember().isOwner())) {
-                if (!Objects.equals(category, command.getCategory())) {
-                    category = command.getCategory();
-                    builder.append("\n\n  __").append(category == null ? "カテゴリなし" : category.getName()).append("__:\n");
-                }
-                builder.append("\n`").append(event.getClient().getTextualPrefix()).append(event.getClient().getPrefix() == null ? " " : "").append(command.getName())
-                        .append(command.getArguments() == null ? "`" : " " + command.getArguments() + "`")
-                        .append(" - ").append(command.getHelp());
-            }
-        }
-        if (event.getClient().getServerInvite() != null)
-            builder.append("\n\nさらにヘルプが必要な場合は、公式サーバーに参加することもできます: ").append(event.getClient().getServerInvite());
+     @Override
+     protected void execute(SlashCommandEvent event) {
+         StringBuilder builder = new StringBuilder("**" + event.getJDA().getSelfUser().getName() + "** Command list:\n");
+         Category category = null;
+         List<Command> commands = event.getClient().getCommands();
+         for (Command command : commands) {
+             if (!command.isHidden() && (!command.isOwnerCommand() || event.getMember().isOwner())) {
+                 if (!Objects.equals(category, command.getCategory())) {
+                     category = command.getCategory();
+                     builder.append("\n\n __").append(category == null ? "No category" : category.getName()).append("__:\n");
+                 }
+                 builder.append("\n`").append(event.getClient().getTextualPrefix()).append(event.getClient().getPrefix() == null ? " " : "").append(command. getName())
+                         .append(command.getArguments() == null ? "`" : " " + command.getArguments() + "`")
+                         .append(" - ").append(command.getHelp());
+             }
+         }
+         if (event.getClient().getServerInvite() != null)
+             builder.append("\n\nIf you need more help, you can also join the official server: ").append(event.getClient().getServerInvite());
 
-        event.reply(builder.toString()).queue();
+         event.reply(builder.toString()).queue();
 
-        /*event.reply(builder.toString(), unused ->
-        {
-            if (event.isFromType(ChannelType.TEXT))
-                event.reactSuccess();
-        }, t -> event.replyWarning("ダイレクトメッセージをブロックしているため、ヘルプを送信できません。"));
-         */
-    }
+         /*event.reply(builder.toString(), unused ->
+         {
+             if (event.isFromType(ChannelType.TEXT))
+                 event.reactSuccess();
+         }, t -> event.replyWarning("We can't send you help because you've blocked direct messages."));
+          */
+     }
 
-    public void execute(CommandEvent event) {
-        StringBuilder builder = new StringBuilder("**" + event.getJDA().getSelfUser().getName() + "** コマンド一覧:\n");
-        Category category = null;
-        List<Command> commands = event.getClient().getCommands();
-        for (Command command : commands) {
-            if (!command.isHidden() && (!command.isOwnerCommand() || event.isOwner())) {
-                if (!Objects.equals(category, command.getCategory())) {
-                    category = command.getCategory();
-                    builder.append("\n\n  __").append(category == null ? "カテゴリなし" : category.getName()).append("__:\n");
-                }
-                builder.append("\n`").append(event.getClient().getTextualPrefix()).append(event.getClient().getPrefix() == null ? " " : "").append(command.getName())
-                        .append(command.getArguments() == null ? "`" : " " + command.getArguments() + "`")
-                        .append(" - ").append(command.getHelp());
-            }
-        }
-        if (event.getClient().getServerInvite() != null)
-            builder.append("\n\nさらにヘルプが必要な場合は、公式サーバーに参加することもできます: ").append(event.getClient().getServerInvite());
+     public void execute(CommandEvent event) {
+         StringBuilder builder = new StringBuilder("**" + event.getJDA().getSelfUser().getName() + "** Command list:\n");
+         Category category = null;
+         List<Command> commands = event.getClient().getCommands();
+         for (Command command : commands) {
+             if (!command.isHidden() && (!command.isOwnerCommand() || event.isOwner())) {
+                 if (!Objects.equals(category, command.getCategory())) {
+                     category = command.getCategory();
+                     builder.append("\n\n __").append(category == null ? "No category" : category.getName()).append("__:\n");
+                 }
+                 builder.append("\n`").append(event.getClient().getTextualPrefix()).append(event.getClient().getPrefix() == null ? " " : "").append(command. getName())
+                         .append(command.getArguments() == null ? "`" : " " + command.getArguments() + "`")
+                         .append(" - ").append(command.getHelp());
+             }
+         }
+         if (event.getClient().getServerInvite() != null)
+             builder.append("\n\nIf you need more help, you can also join the official server: ").append(event.getClient().getServerInvite());
 
-        if (bot.getConfig().getHelpToDm()) {
-            event.replyInDm(builder.toString(), unused ->
-            {
-                if (event.isFromType(ChannelType.TEXT))
-                    event.reactSuccess();
-            }, t -> event.replyWarning("ダイレクトメッセージをブロックしているため、ヘルプを送信できません。"));
-        } else {
-            event.reply(builder.toString());
-        }
-    }
+         if (bot.getConfig().getHelpToDm()) {
+             event.replyInDm(builder.toString(), unused ->
+             {
+                 if (event.isFromType(ChannelType.TEXT))
+                     event.reactSuccess();
+             }, t -> event.replyWarning("We can't send you help because you've blocked direct messages."));
+         } else {
+             event.reply(builder.toString());
+         }
+     }
 }

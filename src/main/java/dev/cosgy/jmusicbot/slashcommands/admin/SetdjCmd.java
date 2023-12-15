@@ -38,8 +38,8 @@ import java.util.List;
 public class SetdjCmd extends AdminCommand {
     public SetdjCmd(Bot bot) {
         this.name = "setdj";
-        this.help = "ボットコマンドを使用できる役割DJを設定します。";
-        this.arguments = "<役割名|NONE|なし>";
+        this.help = "Set the role DJ who can use bot commands.";
+        this.arguments = "<Role name|NONE>";
         this.aliases = bot.getConfig().getAliases(this.name);
 
         this.children = new SlashCommand[]{new SetRole(), new None()};
@@ -48,88 +48,88 @@ public class SetdjCmd extends AdminCommand {
     @Override
     protected void execute(SlashCommandEvent event) {
         if (checkAdminPermission(event.getClient(), event)) {
-            event.reply(event.getClient().getWarning() + "権限がないため実行できません。").queue();
+            event.reply(event.getClient().getWarning() + "Cannot execute because you do not have permission.").queue();
             return;
         }
-        Settings s = event.getClient().getSettingsFor(event.getGuild());
+		Settings s = event.getClient().getSettingsFor(event.getGuild());
 
-        if (event.getOption("role") != null) {
-            s.setDJRole(event.getOption("role").getAsRole());
-            event.reply(event.getClient().getSuccess() + "DJコマンドを役割が、**" + event.getOption("role").getAsRole().getName() + "**のユーザーが使用できるように設定しました。").queue();
-            return;
-        }
-        if (event.getOption("none").getAsString().toLowerCase().matches("(none|なし)")) {
-            s.setDJRole(null);
-            event.reply(event.getClient().getSuccess() + "DJの役割はリセットされました。管理者だけがDJコマンドを使用できます。").queue();
-        } else {
-            event.reply("コマンドが間違っています。").queue();
-        }
-    }
+         if (event.getOption("role") != null) {
+             s.setDJRole(event.getOption("role").getAsRole());
+             event.reply(event.getClient().getSuccess() + "DJ command can be used by users with role **" + event.getOption("role").getAsRole().getName() + "** I set it like this.").queue();
+             return;
+         }
+         if (event.getOption("none").getAsString().toLowerCase().matches("(none|none)")) {
+             s.setDJRole(null);
+             event.reply(event.getClient().getSuccess() + "DJ role has been reset. Only administrators can use DJ commands.").queue();
+         } else {
+             event.reply("Incorrect command.").queue();
+         }
+     }
 
-    @Override
-    protected void execute(CommandEvent event) {
-        Logger log = LoggerFactory.getLogger("SetDjCmd");
-        if (event.getArgs().isEmpty()) {
-            event.reply(event.getClient().getError() + "役割の名前、またはNONEなどを付けてください。");
-            return;
-        }
-        Settings s = event.getClient().getSettingsFor(event.getGuild());
-        if (event.getArgs().toLowerCase().matches("(none|なし)")) {
-            s.setDJRole(null);
-            event.reply(event.getClient().getSuccess() + "DJの役割はリセットされました。管理者だけがDJコマンドを使用できます。");
-        } else {
-            List<Role> list = FinderUtil.findRoles(event.getArgs(), event.getGuild());
-            if (list.isEmpty())
-                event.reply(event.getClient().getWarning() + "役割が見つかりませんでした \"" + event.getArgs() + "\"");
-            else if (list.size() > 1)
-                event.reply(event.getClient().getWarning() + FormatUtil.listOfRoles(list, event.getArgs()));
-            else {
-                s.setDJRole(list.get(0));
-                log.info("DJコマンドを使える役割が追加されました。(" + list.get(0).getName() + ")");
-                event.reply(event.getClient().getSuccess() + "DJコマンドを役割が、**" + list.get(0).getName() + "**のユーザーが使用できるように設定しました。");
-            }
-        }
-    }
+     @Override
+     protected void execute(CommandEvent event) {
+         Logger log = LoggerFactory.getLogger("SetDjCmd");
+         if (event.getArgs().isEmpty()) {
+             event.reply(event.getClient().getError() + "Please provide a role name or something like NONE.");
+             return;
+         }
+         Settings s = event.getClient().getSettingsFor(event.getGuild());
+         if (event.getArgs().toLowerCase().matches("(none|none)")) {
+             s.setDJRole(null);
+             event.reply(event.getClient().getSuccess() + "DJ role has been reset. Only administrators can use DJ commands.");
+         } else {
+             List<Role> list = FinderUtil.findRoles(event.getArgs(), event.getGuild());
+             if (list.isEmpty())
+                 event.reply(event.getClient().getWarning() + "Role not found \"" + event.getArgs() + "\"");
+             else if (list.size() > 1)
+                 event.reply(event.getClient().getWarning() + FormatUtil.listOfRoles(list, event.getArgs()));
+             else {
+                 s.setDJRole(list.get(0));
+                 log.info("A role that can use the DJ command has been added. (" + list.get(0).getName() + ")");
+                 event.reply(event.getClient().getSuccess() + "The DJ command has been set to be available to users with role **" + list.get(0).getName() + "**. ");
+             }
+         }
+     }
 
-    private static class SetRole extends AdminCommand {
-        public SetRole() {
-            this.name = "set";
-            this.help = "DJ権限を付与する役割を設定する。";
+     private static class SetRole extends AdminCommand {
+         public SetRole() {
+             this.name = "set";
+             this.help = "Set a role that grants DJ privileges.";
 
-            List<OptionData> options = new ArrayList<>();
-            options.add(new OptionData(OptionType.ROLE, "role", "権限を付与する役割", true));
-            this.options = options;
-        }
+             List<OptionData> options = new ArrayList<>();
+             options.add(new OptionData(OptionType.ROLE, "role", "Granting role", true));
+             this.options = options;
+         }
 
-        @Override
-        protected void execute(SlashCommandEvent event) {
-            Settings s = event.getClient().getSettingsFor(event.getGuild());
-            Role role = event.getOption("role").getAsRole();
+         @Override
+         protected void execute(SlashCommandEvent event) {
+             Settings s = event.getClient().getSettingsFor(event.getGuild());
+             Role role = event.getOption("role").getAsRole();
 
-            s.setDJRole(role);
-            event.reply(event.getClient().getSuccess() + "DJコマンドを役割が、**" + role.getName() + "**のユーザーが使用できるように設定しました。").queue();
-        }
-    }
+             s.setDJRole(role);
+             event.reply(event.getClient().getSuccess() + "The DJ command has been made available to users with role **" + role.getName() + "**.").queue( );
+         }
+     }
 
-    private static class None extends AdminCommand {
-        public None() {
-            this.name = "none";
-            this.help = "DJの役割をリセット";
-        }
+     private static class None extends AdminCommand {
+         public None() {
+             this.name = "none";
+             this.help = "Reset DJ role";
+         }
 
-        @Override
-        protected void execute(SlashCommandEvent event) {
-            Settings s = event.getClient().getSettingsFor(event.getGuild());
-            s.setDJRole(null);
-            event.reply(event.getClient().getSuccess() + "DJの役割はリセットされました。管理者だけがDJコマンドを使用できます。").queue();
-        }
+         @Override
+         protected void execute(SlashCommandEvent event) {
+             Settings s = event.getClient().getSettingsFor(event.getGuild());
+             s.setDJRole(null);
+             event.reply(event.getClient().getSuccess() + "DJ role has been reset. Only administrators can use DJ commands.").queue();
+         }
 
-        @Override
-        protected void execute(CommandEvent event) {
-            Settings s = event.getClient().getSettingsFor(event.getGuild());
-            s.setDJRole(null);
-            event.replySuccess("DJの役割はリセットされました。管理者だけがDJコマンドを使用できます。");
-        }
-    }
+         @Override
+         protected void execute(CommandEvent event) {
+             Settings s = event.getClient().getSettingsFor(event.getGuild());
+             s.setDJRole(null);
+             event.replySuccess("DJ role has been reset. Only administrators can use DJ commands.");
+         }
+     }
 
 }

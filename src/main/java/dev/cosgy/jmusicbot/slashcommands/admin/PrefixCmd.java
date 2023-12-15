@@ -33,13 +33,13 @@ import java.util.List;
 public class PrefixCmd extends AdminCommand {
     public PrefixCmd(Bot bot) {
         this.name = "prefix";
-        this.help = "サーバー固有のプレフィックスを設定します";
-        this.arguments = "<プレフィックス|NONE>";
+        this.help = "Set server-specific prefix";
+        this.arguments = "<prefix|NONE>";
         this.aliases = bot.getConfig().getAliases(this.name);
         //this.children = new SlashCommand[]{new None()};
 
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.STRING, "prefix", "設定するプレフィックス", true));
+        options.add(new OptionData(OptionType.STRING, "prefix", "Prefix to set", true));
 
         this.options = options;
     }
@@ -47,34 +47,34 @@ public class PrefixCmd extends AdminCommand {
     @Override
     protected void execute(SlashCommandEvent event) {
         if (checkAdminPermission(event.getClient(), event)) {
-            event.reply(event.getClient().getWarning() + "権限がないため実行できません。").queue();
+            event.reply(event.getClient().getWarning() + "Cannot execute because you do not have permission.").queue();
             return;
         }
         Settings s = event.getClient().getSettingsFor(event.getGuild());
         String prefix = event.getOption("prefix").getAsString();
-        if (prefix.toLowerCase().matches("(none|なし)")) {
+        if (prefix.toLowerCase().matches("(none)")) {
             s.setPrefix(null);
-            event.reply(event.getClient().getSuccess() + "プレフィックスがクリアされました。").queue();
+            event.reply(event.getClient().getSuccess() + "Prefix cleared.").queue();
         } else {
             s.setPrefix(prefix);
-            event.reply(event.getClient().getSuccess() + "*" + event.getGuild().getName() + "* でのプレフィックスを、 `" + prefix + "`に設定しました。").queue();
+            event.reply(event.getClient().getSuccess() + "*" + event.getGuild().getName() + "* prefix with" + prefix + "is set.").queue();
         }
     }
 
     @Override
     protected void execute(CommandEvent event) {
         if (event.getArgs().isEmpty()) {
-            event.replyError("プレフィックスまたはNONEを含めてください。");
+            event.replyError("Please include the prefix or NONE.");
             return;
         }
 
         Settings s = event.getClient().getSettingsFor(event.getGuild());
-        if (event.getArgs().toLowerCase().matches("(none|なし)")) {
+        if (event.getArgs().toLowerCase().matches("(none)")) {
             s.setPrefix(null);
-            event.replySuccess("プレフィックスがクリアされました。");
+            event.replySuccess("Prefix cleared.");
         } else {
             s.setPrefix(event.getArgs());
-            event.replySuccess("*" + event.getGuild().getName() + "* でのプレフィックスを、 `" + event.getArgs() + "`に設定しました。");
+            event.replySuccess("*" + event.getGuild().getName() + "* prefix with " + event.getArgs() + "has been set");
         }
     }
 }

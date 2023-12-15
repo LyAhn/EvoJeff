@@ -22,49 +22,49 @@ import com.jagrosh.jmusicbot.audio.AudioHandler;
 import dev.cosgy.jmusicbot.slashcommands.MusicCommand;
 
 /**
- * @author John Grosh <john.a.grosh@gmail.com>
- */
+  * @author John Grosh <john.a.grosh@gmail.com>
+  */
 public class ShuffleCmd extends MusicCommand {
-    public ShuffleCmd(Bot bot) {
-        super(bot);
-        this.name = "shuffle";
-        this.help = "追加した曲をシャッフル";
-        this.aliases = bot.getConfig().getAliases(this.name);
-        this.beListening = true;
-        this.bePlaying = true;
-    }
+     public ShuffleCmd(Bot bot) {
+         super(bot);
+         this.name = "shuffle";
+         this.help = "Shuffle added songs";
+         this.aliases = bot.getConfig().getAliases(this.name);
+         this.beListening = true;
+         this.bePlaying = true;
+     }
 
-    @Override
-    public void doCommand(CommandEvent event) {
-        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
-        int s = handler.getQueue().shuffle(event.getAuthor().getIdLong());
-        switch (s) {
-            case 0:
-                event.replyError("再生待ちに曲がありません!");
-                break;
-            case 1:
-                event.replyWarning("再生待ちには現在1曲しかありません!");
-                break;
-            default:
-                event.replySuccess("" + s + "曲をシャッフルしました。");
-                break;
-        }
-    }
+     @Override
+     public void doCommand(CommandEvent event) {
+         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+         int s = handler.getQueue().shuffle(event.getAuthor().getIdLong());
+         switch (s) {
+             case 0:
+                 event.replyError("There are no songs waiting to be played!");
+                 break;
+             case 1:
+                 event.replyWarning("There is currently only one song waiting to be played!");
+                 break;
+             default:
+                 event.replySuccess("" + s + "Songs have been shuffled.");
+                 break;
+         }
+     }
 
-    @Override
-    public void doCommand(SlashCommandEvent event) {
-        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
-        int s = handler.getQueue().shuffle(event.getUser().getIdLong());
-        switch (s) {
-            case 0:
-                event.reply(event.getClient().getError() + "再生待ちに曲がありません!").queue();
-                break;
-            case 1:
-                event.reply(event.getClient().getWarning() + "再生待ちには現在1曲しかありません!").queue();
-                break;
-            default:
-                event.reply(event.getClient().getSuccess() + "" + s + "曲をシャッフルしました。").queue();
-                break;
-        }
-    }
+     @Override
+     public void doCommand(SlashCommandEvent event) {
+         AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+         int s = handler.getQueue().shuffle(event.getUser().getIdLong());
+         switch (s) {
+             case 0:
+                 event.reply(event.getClient().getError() + "There are no songs waiting to be played!").queue();
+                 break;
+             case 1:
+                 event.reply(event.getClient().getWarning() + "There is currently only one song waiting to be played!").queue();
+                 break;
+             default:
+                 event.reply(event.getClient().getSuccess() + "" + s + "Songs have been shuffled.").queue();
+                 break;
+         }
+     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 Cosgy Dev
+ * Copyright 2018-2020 John Grosh
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -58,12 +58,12 @@ public class PlayerManager extends DefaultAudioPlayerManager {
         source(YoutubeAudioSourceManager.class).setPlaylistPageCount(10);
 
         if (getConfiguration().getOpusEncodingQuality() != 10) {
-            logger.debug("OpusEncodingQuality は、" + getConfiguration().getOpusEncodingQuality() + "(< 10)" + ", 品質を10に設定します。");
+            logger.debug("OpusEncodingQuality は、" + getConfiguration().getOpusEncodingQuality() + "(< 10)" + ", Set quality to 10.");
             getConfiguration().setOpusEncodingQuality(10);
         }
 
         if (getConfiguration().getResamplingQuality() != AudioConfiguration.ResamplingQuality.HIGH) {
-            logger.debug("ResamplingQuality は " + getConfiguration().getResamplingQuality().name() + "(HIGHではない), 品質をHIGHに設定します。");
+            logger.debug("ResamplingQuality は " + getConfiguration().getResamplingQuality().name() + "(Not HIGH), Set quality to HIGH");
             getConfiguration().setResamplingQuality(AudioConfiguration.ResamplingQuality.HIGH);
         }
     }

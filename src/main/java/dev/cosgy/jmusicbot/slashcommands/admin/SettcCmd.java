@@ -39,8 +39,8 @@ import java.util.List;
 public class SettcCmd extends AdminCommand {
     public SettcCmd(Bot bot) {
         this.name = "settc";
-        this.help = "ボットのコマンドチャンネルを設定します";
-        this.arguments = "<チャンネル名|NONE|なし>";
+        this.help = "Set up the bot's command channel";
+        this.arguments = "<Channel name|NONE>";
         this.aliases = bot.getConfig().getAliases(this.name);
 
         this.children = new SlashCommand[]{new Set(), new None()};
@@ -50,88 +50,88 @@ public class SettcCmd extends AdminCommand {
     protected void execute(SlashCommandEvent event) {
     }
 
-    // ここは普通のコマンド
-    @Override
-    protected void execute(CommandEvent event) {
-        Logger log = LoggerFactory.getLogger("SettcCmd");
-        if (event.getArgs().isEmpty()) {
-            event.reply(event.getClient().getError() + "チャンネルまたはNONEを含めてください。");
-            return;
-        }
-        Settings s = event.getClient().getSettingsFor(event.getGuild());
-        if (event.getArgs().toLowerCase().matches("(none|なし)")) {
-            s.setTextChannel(null);
-            event.reply(event.getClient().getSuccess() + "音楽コマンドは現在どのチャンネルでも使用できます。");
-        } else {
-            List<TextChannel> list = FinderUtil.findTextChannels(event.getArgs(), event.getGuild());
-            if (list.isEmpty())
-                event.reply(event.getClient().getWarning() + "一致するチャンネルが見つかりませんでした \"" + event.getArgs() + "\"");
-            else if (list.size() > 1)
-                event.reply(event.getClient().getWarning() + FormatUtil.listOfTChannels(list, event.getArgs()));
-            else {
-                s.setTextChannel(list.get(0));
-                log.info("音楽コマンド用のチャンネルを設定しました。");
-                event.reply(event.getClient().getSuccess() + "音楽コマンドを<#" + list.get(0).getId() + ">のみで使用できるように設定しました。");
-            }
-        }
-    }
+    // This is a normal command - Okay mate... Sure why do you need to comment that in?
+	@Override
+     protected void execute(CommandEvent event) {
+         Logger log = LoggerFactory.getLogger("SettcCmd");
+         if (event.getArgs().isEmpty()) {
+             event.reply(event.getClient().getError() + "Please include channel or NONE");
+             return;
+         }
+         Settings s = event.getClient().getSettingsFor(event.getGuild());
+         if (event.getArgs().toLowerCase().matches("(none)")) {
+             s.setTextChannel(null);
+             event.reply(event.getClient().getSuccess() + "Music commands are currently available on any channel.");
+         } else {
+             List<TextChannel> list = FinderUtil.findTextChannels(event.getArgs(), event.getGuild());
+             if (list.isEmpty())
+                 event.reply(event.getClient().getWarning() + "No matching channels were found \"" + event.getArgs() + "\"");
+             else if (list.size() > 1)
+                 event.reply(event.getClient().getWarning() + FormatUtil.listOfTChannels(list, event.getArgs()));
+             else {
+                 s.setTextChannel(list.get(0));
+                 log.info("Channel set for music command.");
+                 event.reply(event.getClient().getSuccess() + "Music command has been set to be usable only with <#" + list.get(0).getId() + ">.");
+             }
+         }
+     }
 
-    private static class Set extends AdminCommand {
-        public Set() {
-            this.name = "set";
-            this.help = "音楽コマンド用のチャンネルを設定";
+     private static class Set extends AdminCommand {
+         public Set() {
+             this.name = "set";
+             this.help = "Set channel for music commands";
 
-            List<OptionData> options = new ArrayList<>();
-            options.add(new OptionData(OptionType.CHANNEL, "channel", "テキストチャンネル", true));
+             List<OptionData> options = new ArrayList<>();
+             options.add(new OptionData(OptionType.CHANNEL, "channel", "text channel", true));
 
-            this.options = options;
-        }
+             this.options = options;
+         }
 
-        @Override
-        protected void execute(SlashCommandEvent event) {
-            if (checkAdminPermission(event.getClient(), event)) {
-                event.reply(event.getClient().getWarning() + "権限がないため実行できません。").queue();
-                return;
-            }
-            Settings s = event.getClient().getSettingsFor(event.getGuild());
+         @Override
+         protected void execute(SlashCommandEvent event) {
+             if (checkAdminPermission(event.getClient(), event)) {
+                 event.reply(event.getClient().getWarning() + "Cannot execute because you do not have permission.").queue();
+                 return;
+             }
+             Settings s = event.getClient().getSettingsFor(event.getGuild());
 
 
-            if (event.getOption("channel").getChannelType() != ChannelType.TEXT) {
-                event.reply(event.getClient().getError() + "テキストチャンネルを設定して下さい。").queue();
-                return;
-            }
-            Long channelId = event.getOption("channel").getAsLong();
-            TextChannel tc = event.getGuild().getTextChannelById(channelId);
+             if (event.getOption("channel").getChannelType() != ChannelType.TEXT) {
+                 event.reply(event.getClient().getError() + "Please set up a text channel.").queue();
+                 return;
+             }
+             Long channelId = event.getOption("channel").getAsLong();
+             TextChannel tc = event.getGuild().getTextChannelById(channelId);
 
-            s.setTextChannel(tc);
-            event.reply(client.getSuccess() + "音楽コマンドを<#" + tc.getId() + ">のみで使用できるように設定しました。").queue();
+             s.setTextChannel(tc);
+             event.reply(client.getSuccess() + "Music command has been set to be available only in <#" + tc.getId() + ">.").queue();
 
-        }
-    }
+         }
+     }
 
-    private static class None extends AdminCommand {
-        public None() {
-            this.name = "none";
-            this.help = "音楽コマンド用チャンネルの設定を無効にします。";
-        }
+     private static class None extends AdminCommand {
+         public None() {
+             this.name = "none";
+             this.help = "Disable channel settings for music commands.";
+         }
 
-        @Override
-        protected void execute(SlashCommandEvent event) {
-            if (checkAdminPermission(event.getClient(), event)) {
-                event.reply(event.getClient().getWarning() + "権限がないため実行できません。").queue();
-                return;
-            }
-            Settings s = event.getClient().getSettingsFor(event.getGuild());
-            s.setTextChannel(null);
-            event.reply(event.getClient().getSuccess() + "音楽コマンドは現在どのチャンネルでも使用できます。").queue();
-        }
+         @Override
+         protected void execute(SlashCommandEvent event) {
+             if (checkAdminPermission(event.getClient(), event)) {
+                 event.reply(event.getClient().getWarning() + "Cannot execute because you do not have permission.").queue();
+                 return;
+             }
+             Settings s = event.getClient().getSettingsFor(event.getGuild());
+             s.setTextChannel(null);
+             event.reply(event.getClient().getSuccess() + "Music commands are currently available on any channel.").queue();
+         }
 
-        @Override
-        protected void execute(CommandEvent event) {
-            Settings s = event.getClient().getSettingsFor(event.getGuild());
-            s.setTextChannel(null);
-            event.replySuccess("音楽コマンドは現在どのチャンネルでも使用できます。");
-        }
-    }
+         @Override
+         protected void execute(CommandEvent event) {
+             Settings s = event.getClient().getSettingsFor(event.getGuild());
+             s.setTextChannel(null);
+             event.replySuccess("Music commands are currently available on any channel.");
+         }
+     }
 
 }
