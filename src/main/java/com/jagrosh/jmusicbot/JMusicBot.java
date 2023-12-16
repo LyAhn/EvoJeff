@@ -212,7 +212,8 @@ public class JMusicBot {
         if (config.getStatus() != OnlineStatus.UNKNOWN)
             cb.setStatus(config.getStatus());
         if (config.getGame() == null)
-            cb.setActivity(Activity.playing(config.getPrefix() + config.getHelp() + "Check the help at"));
+    //      cb.setActivity(Activity.playing(config.getPrefix() + config.getHelp() + " /help for cmds"));
+            cb.setActivity(Activity.playing(" /help for cmds"))
         else if (config.getGame().getName().toLowerCase().matches("(none)")) {
             cb.setActivity(null);
             nogame = true;

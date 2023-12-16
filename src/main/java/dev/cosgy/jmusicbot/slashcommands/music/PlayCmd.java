@@ -74,7 +74,7 @@ public class PlayCmd extends MusicCommand {
          this.aliases = bot.getConfig().getAliases(this.name);
          this.beListening = true;
          this.bePlaying = false;
-         this.children = new SlashCommand[]{new PlaylistCmd(bot), new MylistCmd(bot), new PublistCmd(bot), new RequestCmd(bot)};
+/**          this.children = new SlashCommand[]{new PlaylistCmd(bot), new MylistCmd(bot), new PublistCmd(bot), new RequestCmd(bot)};*/
      }
 
      @Override
@@ -671,12 +671,12 @@ if (handler.playFromDefault()) {
              this.name = "publist";
              this.aliases = new String[]{"pul"};
              this.arguments = "<name>";
-             this.help = "Play public list";
+             this.help = "Play public playlist";
              this.beListening = true;
              this.bePlaying = false;
 
              List<OptionData> options = new ArrayList<>();
-             options.add(new OptionData(OptionType.STRING, "name", "Public list name", true));
+             options.add(new OptionData(OptionType.STRING, "name", "Public playlist name", true));
              this.options = options;
          }
 

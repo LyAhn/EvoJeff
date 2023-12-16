@@ -83,32 +83,32 @@ public class AboutCommand extends SlashCommand {
         }
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(event.getGuild() == null ? color : event.getGuild().getSelfMember().getColor());
-        builder.setAuthor("" + event.getJDA().getSelfUser().getName() + "Information about", null, event.getJDA().getSelfUser().getAvatarUrl());
+        builder.setAuthor("" + event.getJDA().getSelfUser().getName() + " - About", null, event.getJDA().getSelfUser().getAvatarUrl());
         String CosgyOwner = "Forked by dubsound into English";
         String author = event.getJDA().getUserById(event.getClient().getOwnerId()) == null ? "<@" + event.getClient().getOwnerId() + ">"
                 : Objects.requireNonNull(event.getJDA().getUserById(event.getClient().getOwnerId())).getName();
-        StringBuilder descr = new StringBuilder().append("Hello! **").append(event.getJDA().getSelfUser().getName()).append("This is **. ")
-                .append(description).append(" is ").append("[" + JDAUtilitiesInfo.AUTHOR + "](https://github.com/JDA-Applications) [Commands Extension](" + JDAUtilitiesInfo.GITHUB + ") (")
+        StringBuilder descr = new StringBuilder().append("Hello! This is **").append(event.getJDA().getSelfUser().getName()).append(" **. ")
+                .append(description).append(" using ").append("[" + JDAUtilitiesInfo.AUTHOR + "](https://github.com/JDA-Applications) [Commands Extension](" + JDAUtilitiesInfo.GITHUB + ") (")
                 .append(JDAUtilitiesInfo.VERSION).append(") and [JDA library](https://github.com/DV8FromTheWorld/JDA) (")
                 .append(JDAInfo.VERSION).append(") and is owned by ").append((IS_AUTHOR ? CosgyOwner : author + "."))
                 .append(event.getJDA().getSelfUser().getName()).append("If you have any questions, please contact dubsound on Discord")
-                .append("\nHow to use this bot`").append("/help")
-                .append("You can check with `.").append("\n\nFeatures: ```css");
+                .append("\nUse the following command to learn how to use the bot ").append("/help")
+                .append(" You will receive a DM from the bot.").append("\n\nFeatures: ```css");
         for (String feature : features)
             descr.append("\n").append(event.getClient().getSuccess().startsWith("<") ? REPLACEMENT_ICON : event.getClient().getSuccess()).append(" ").append( feature);
         descr.append("````");
         builder.setDescription(descr);
         if (event.getJDA().getShardInfo().getShardTotal() == 1) {
-            builder.addField("Status", event.getJDA().getGuilds().size() + "Server\n1 Shard", true);
-            builder.addField("Users", event.getJDA().getUsers().size() + "Unique\n" + event.getJDA().getGuilds().stream().mapToInt(g -> g.getMembers ().size()).sum() + "sum", true);
-            builder.addField("Channels", event.getJDA().getTextChannels().size() + "Text\n" + event.getJDA().getVoiceChannels().size() + "Voice", true);
+            builder.addField("Status", event.getJDA().getGuilds().size() + " Server\n1 Shard", true);
+            builder.addField("Users", event.getJDA().getUsers().size() + " Unique\n" + event.getJDA().getGuilds().stream().mapToInt(g -> g.getMembers ().size()).sum() + "sum", true);
+            builder.addField("Channels", event.getJDA().getTextChannels().size() + " Text\n" + event.getJDA().getVoiceChannels().size() + " Voice", true);
         } else {
             builder.addField("Status", (event.getClient()).getTotalGuilds() + "Server\nShard" + (event.getJDA().getShardInfo().getShardId() + 1)
                     + "/" + event.getJDA().getShardInfo().getShardTotal(), true);
             builder.addField("", event.getJDA().getUsers().size() + "Users' shard\n" + event.getJDA().getGuilds().size() + "Server", true);
             builder.addField("", event.getJDA().getTextChannels().size() + "Text Channels\n" + event.getJDA().getVoiceChannels().size() + "Voice Channels", true);
         }
-        builder.setFooter("Time when restart occurred", "https://th.bing.com/th/id/OIG.AWZcgROQPda8Tzywfmc1?pid=ImgGn");
+        builder.setFooter("Time when restart occurred", "https://th.bing.com/th/id/OIG.vK6X97DRTB17f9glduev?pid=ImgGn");
         builder.setTimestamp(event.getClient().getStartTime());
         event.replyEmbeds(builder.build()).queue();
     }
@@ -131,13 +131,13 @@ public class AboutCommand extends SlashCommand {
         String CosgyOwner = "Forked by dubsound into English";
         String author = event.getJDA().getUserById(event.getClient().getOwnerId()) == null ? "<@" + event.getClient().getOwnerId() + ">"
                 : Objects.requireNonNull(event.getJDA().getUserById(event.getClient().getOwnerId())).getName();
-        StringBuilder descr = new StringBuilder().append("Hello! **").append(event.getSelfUser().getName()).append("This is **. ")
-                .append(description).append(" is ").append(JDAUtilitiesInfo.AUTHOR + " [command extension](" + JDAUtilitiesInfo.GITHUB + ") (")
+        StringBuilder descr = new StringBuilder().append("Hello! This is **").append(event.getSelfUser().getName()).append("** . ")
+                .append(description).append(" is owned by dubsound using ").append(JDAUtilitiesInfo.AUTHOR + " [command extension](" + JDAUtilitiesInfo.GITHUB + ") (")
                 .append(JDAUtilitiesInfo.VERSION).append(") and [JDA library](https://github.com/DV8FromTheWorld/JDA) (")
                 .append(JDAInfo.VERSION).append(") and is owned by ").append((IS_AUTHOR ? CosgyOwner : author + "."))
                 .append(event.getSelfUser().getName()).append("If you have any questions, please contact dubsound")
-                .append("\nHow to use this bot`").append(event.getClient().getTextualPrefix()).append(event.getClient().getHelpWord())
-                .append("You can check with `.").append("\n\nFeatures: ```css");
+                .append("\nUse the following command to learn how to use the bot ").append(event.getClient().getTextualPrefix()).append(event.getClient().getHelpWord())
+                .append(" You will receive a DM from the bot.").append("\n\nFeatures: ```css");
         for (String feature : features)
             descr.append("\n").append(event.getClient().getSuccess().startsWith("<") ? REPLACEMENT_ICON : event.getClient().getSuccess()).append(" ").append( feature);
         descr.append("````");
@@ -153,7 +153,7 @@ public class AboutCommand extends SlashCommand {
             builder.addField("", event.getJDA().getUsers().size() + "Users' shard\n" + event.getJDA().getGuilds().size() + "Server", true);
             builder.addField("", event.getJDA().getTextChannels().size() + "Text Channels\n" + event.getJDA().getVoiceChannels().size() + "Voice Channels", true);
         }
-        builder.setFooter("Time when restart occurred", "https://th.bing.com/th/id/OIG.AWZcgROQPda8Tzywfmc1?pid=ImgGn");
+        builder.setFooter("Time when restart occurred", "https://th.bing.com/th/id/OIG.vK6X97DRTB17f9glduev?pid=ImgGn");
         builder.setTimestamp(event.getClient().getStartTime());
         event.reply(builder.build());
     }
