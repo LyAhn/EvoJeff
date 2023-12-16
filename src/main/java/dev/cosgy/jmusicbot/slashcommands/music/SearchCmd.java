@@ -199,7 +199,7 @@ public class SearchCmd extends MusicCommand {
                     })
                     .setUsers(event.getAuthor())
             ;
-            for (int i = 0; i < 4 && i < playlist.getTracks().size(); i++) {
+            for (int i = 0; i < 9 && i < playlist.getTracks().size(); i++) {
                 AudioTrack track = playlist.getTracks().get(i);
                 builder.addChoices("`[" + FormatUtil.formatTime(track.getDuration()) + "]` [**" + track.getInfo().title + "**](" + track.getInfo().uri + ")");
             }
@@ -208,15 +208,15 @@ public class SearchCmd extends MusicCommand {
 
         @Override
         public void noMatches() {
-            m.editMessage(FormatUtil.filter(event.getClient().getWarning() + " `" + event.getArgs() + "`に該当する結果は見つかりませんでした。")).queue();
+            m.editMessage(FormatUtil.filter(event.getClient().getWarning() + " No results were found for " + event.getArgs() + " ")).queue();
         }
 
         @Override
         public void loadFailed(FriendlyException throwable) {
             if (throwable.severity == Severity.COMMON)
-                m.editMessage(event.getClient().getError() + " 読み込みエラー: " + throwable.getMessage()).queue();
+                m.editMessage(event.getClient().getError() + " Loading error: " + throwable.getMessage()).queue();
             else
-                m.editMessage(event.getClient().getError() + " 曲の読み込みに失敗しました。").queue();
+                m.editMessage(event.getClient().getError() + " Failed to load song").queue();
         }
     }
 }

@@ -62,7 +62,7 @@ public class SettingsCmd extends SlashCommand {
                         + "\nDefault Playlist: " + (s.getDefaultPlaylist() == null ? "None" : "**" + s.getDefaultPlaylist() + "**")
                 )
                 .setFooter(String.format(
-                                "Join %s servers | Connect to %s voice channels",
+                                "Joined %s servers | Connected to %s voice channels",
                                 event.getJDA().getGuilds().size(),
                                 event.getJDA().getGuilds().stream().filter(g -> Objects.requireNonNull(g.getSelfMember().getVoiceState()).inAudioChannel()).count()),
                         null);

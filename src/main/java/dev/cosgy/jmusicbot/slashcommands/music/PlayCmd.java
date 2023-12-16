@@ -87,7 +87,7 @@ public class PlayCmd extends MusicCommand {
              if (handler.getPlayer().getPlayingTrack() != null && handler.getPlayer().isPaused()) {
                  if (DJCommand.checkDJPermission(event)) {
                      handler.getPlayer().setPaused(false);
-                     event.replySuccess("**" + handler.getPlayer().getPlayingTrack().getInfo().title + "Playing of ** has resumed.");
+                     event.replySuccess("**" + handler.getPlayer().getPlayingTrack().getInfo().title + "** has resumed.");
 
                      Bot.updatePlayStatus(event.getGuild(), event.getGuild().getSelfMember(), PlayStatus.PLAYING);
                  } else
@@ -195,8 +195,8 @@ if (handler.playFromDefault()) {
 // Output MSG ex:
              // Added <title><(length)>.
              // Added <title><(length)> to <playback queue number> in the queue.
-             String addMsg = FormatUtil.filter(event.getClient().getSuccess() + " **" + (track.getInfo().uri.contains("https://stream.gensokyoradio.net/") ? "Gensokyo Radio" : track.getInfo().title)
-                     + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? " added." : "The " + pos + "th position waiting to be played. Added. "));
+             String addMsg = FormatUtil.filter(event.getClient().getSuccess() + "Added **" + (track.getInfo().uri.contains("https://stream.gensokyoradio.net/") ? "Gensokyo Radio" : track.getInfo().title)
+                     + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? " added." : " to the queue at potion " + pos));
              if (playlist == null || !event.getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_ADD_REACTION))
                  m.editMessage(addMsg).queue();
              else {
@@ -323,7 +323,7 @@ if (handler.playFromDefault()) {
                      if (DJCommand.checkDJPermission(event.getClient(), event)) {
 
                          handler.getPlayer().setPaused(false);
-                         event.reply(event.getClient().getSuccess() + "**" + handler.getPlayer().getPlayingTrack().getInfo().title + "Playing of ** has resumed.").queue( );
+                         event.reply(event.getClient().getSuccess() + "**" + handler.getPlayer().getPlayingTrack().getInfo().title + "** has resumed.").queue( );
 
                          Bot.updatePlayStatus(event.getGuild(), event.getGuild().getSelfMember(), PlayStatus.PLAYING);
                      } else
@@ -426,7 +426,7 @@ if (handler.playFromDefault()) {
                  // Added <title><(length)>.
                  // Added <title><(length)> to <playback queue number> in the queue.
                  String addMsg = FormatUtil.filter(event.getClient().getSuccess() + " **" + (track.getInfo().uri.matches(".*stream.gensokyoradio.net/.*") ? "Gensokyo Radio" : track.getInfo().title)
-                         + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? " added." : "The " + pos + "th position waiting to be played. Added. "));
+                     + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? " added." : " to the queue at potion " + pos));
                  if (playlist == null || !event.getGuild().getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_ADD_REACTION)) {
                      m.editOriginal(addMsg).queue();
                  } else {
