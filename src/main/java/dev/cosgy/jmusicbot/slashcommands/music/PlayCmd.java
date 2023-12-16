@@ -74,7 +74,7 @@ public class PlayCmd extends MusicCommand {
          this.aliases = bot.getConfig().getAliases(this.name);
          this.beListening = true;
          this.bePlaying = false;
-/**          this.children = new SlashCommand[]{new PlaylistCmd(bot), new MylistCmd(bot), new PublistCmd(bot), new RequestCmd(bot)};*/
+         this.children = new SlashCommand[]{new PlaylistCmd(bot), new MylistCmd(bot), new PublistCmd(bot), new RequestCmd(bot)};*/
      }
 
      @Override
