@@ -42,12 +42,12 @@ public class PauseCmd extends DJCommand {
      public void doCommand(CommandEvent event) {
          AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
          if (handler.getPlayer().isPaused()) {
-             event.replyWarning("The song is already paused. `" + event.getClient().getPrefix() + " You can unpause it using play`.");
+             event.replyWarning("The song is already paused." + event.getClient().getPrefix() + " You can unpause it using play.");
              return;
          }
          handler.getPlayer().setPaused(true);
          log.info(event.getGuild().getName() + "paused" + handler.getPlayer().getPlayingTrack().getInfo().title + "at");
-         event.replySuccess("**" + handler.getPlayer().getPlayingTrack().getInfo().title + "** has been paused. `" + event.getClient().getPrefix() + " play ` can be used to unpause.");
+         event.replySuccess("**" + handler.getPlayer().getPlayingTrack().getInfo().title + "** has been paused. " + event.getClient().getPrefix() + "play can be used to unpause.");
 
          Bot.updatePlayStatus(event.getGuild(), event.getGuild().getSelfMember(), PlayStatus.PAUSED);
      }
@@ -60,7 +60,7 @@ public class PauseCmd extends DJCommand {
          }
          AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
          if (handler.getPlayer().isPaused()) {
-             event.reply(event.getClient().getWarning() + "The song is already paused. `" + event.getClient().getPrefix() + " Use play` to unpause. ").queue();
+             event.reply(event.getClient().getWarning() + "The song is already paused. " + event.getClient().getPrefix() + "play to unpause. ").queue();
              return;
          }
          handler.getPlayer().setPaused(true);
