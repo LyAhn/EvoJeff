@@ -159,8 +159,8 @@ public class QueueCmd extends MusicCommand {
                              ah.getPlayer().getPlayingTrack().getInfo().uri.matches(".*stream.gensokyoradio.net/.*") ? "Gensokyo Radio" :
                                      ah.getPlayer().getPlayingTrack().getInfo().title).append("**\n");
          }
-         return FormatUtil.filter(sb.append(success).append(" List of songs waiting to be played | ").append(songslength)
-                 .append(" entry | `").append(FormatUtil.formatTime(total)).append("` ")
+         return FormatUtil.filter(sb.append(success).append(" Songs waiting to be played | ").append(songslength)
+                 .append(" track(s) | `").append(FormatUtil.formatTime(total)).append("` ")
                  // RepeatMode.OFF - ""
                  // RepeatMode.ALL - QueueCmd.REPEAT_ALL
                  // RepeatMode.SINGLE = QueueCmd.REPEAT_SINGLE
