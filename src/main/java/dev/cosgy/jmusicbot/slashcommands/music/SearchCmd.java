@@ -75,13 +75,13 @@ public class SearchCmd extends MusicCommand {
             event.replyError("Please specify a string.");
             return;
         }
-        event.reply(searchingEmoji + "`[" + event.getArgs() + "]`Searching for... ",
+        event.reply(searchingEmoji + "Searching for `[" + event.getArgs() + "]`... ",
                 m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), searchPrefix + event.getArgs(), new ResultHandler(m, event)));
     }
 
     @Override
     public void doCommand(SlashCommandEvent event) {
-        event.reply(searchingEmoji + "`[" + event.getOption("input").getAsString() + "]`Searching for... ").queue(
+        event.reply(searchingEmoji + "Searching for `[" + event.getOption("input").getAsString() + "]`... ").queue(
                 m -> bot.getPlayerManager().loadItemOrdered(event.getGuild(), searchPrefix + event.getOption("input").getAsString(), new SlashResultHandler(m, event)));
     }
 

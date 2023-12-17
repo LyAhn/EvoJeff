@@ -139,8 +139,8 @@ if (handler.playFromDefault()) {
 
                      playlist.loadTracks(bot.getPlayerManager(), (at) -> handler.addTrack(new QueuedTrack(at, event.getAuthor())), () -> {
                          StringBuilder builder = new StringBuilder(playlist.getTracks().isEmpty()
-                                 ? event.getClient().getWarning() + "Song not loaded!"
-                                 : event.getClient().getSuccess() + " ** " + playlist.getTracks().size() + " **Song loaded!");
+                                 ? event.getClient().getWarning() + "Songs not loaded!"
+                                 : event.getClient().getSuccess() + " ** " + playlist.getTracks().size() + " ** Songs loaded!");
                          if (!playlist.getErrors().isEmpty())
                              builder.append("\nThe following song could not be loaded.:");
                          playlist.getErrors().forEach(err -> builder.append("\n`[").append(err.getIndex() + 1).append("]` **").append(err.getItem( )).append("**: ").append(err.getReason()));

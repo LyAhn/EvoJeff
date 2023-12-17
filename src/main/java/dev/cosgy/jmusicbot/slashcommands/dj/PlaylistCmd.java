@@ -90,7 +90,7 @@ public class PlaylistCmd extends DJCommand {
             } else if (bot.getPlaylistLoader().getPlaylist(guildId, pName) == null) {
                 try {
                     bot.getPlaylistLoader().createPlaylist(guildId, pName);
-                    event.reply(event.getClient().getSuccess() + "Playlist `" + pName + "Created `");
+                    event.reply(event.getClient().getSuccess() + "Playlist `" + pName + "` created ");
                 } catch (IOException e) {
                     if (event.isOwner() || event.getMember().isOwner()) {
                         event.replyError("An error occurred while loading the song.\n" +

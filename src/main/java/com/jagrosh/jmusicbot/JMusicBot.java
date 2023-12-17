@@ -73,12 +73,12 @@ public class JMusicBot {
         try {
             System.out.println(FigletFont.convertOneLine("Jeff" + OtherUtil.getCurrentVersion()) + "\n" + "by LyAhn/KetaFPV/DubSound");
         } catch (IOException e) {
-            System.out.println("Jeff" + OtherUtil.getCurrentVersion() + "\nby LyAhn/KetaFPV/DubSound");
+            System.out.println("Jeff" + OtherUtil.getCurrentVersion() + "\n by LyAhn/KetaFPV/DubSound");
         }
 
 
         // create prompt to handle startup
-        Prompt prompt = new Prompt("Jeff", "Switch to nogui mode. You can manually start it in nogui mode by including the -Dnogui=true flag.");
+        Prompt prompt = new Prompt("Jeff ", "Switch to nogui mode. You can manually start it in nogui mode by including the -Dnogui=true flag.");
 
         // check deprecated nogui mode (new way of setting it is -Dnogui=true)
         for (String arg : args)
