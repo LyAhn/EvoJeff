@@ -154,7 +154,6 @@ public class JMusicBot {
             //if (config.getCosgyDevHost()) add(new InfoCommand(bot));
             // General
             add(new ServerInfo(bot));
-            add(new HelpCmd(bot)); // This should now add the Help command?
             //add(new UserInfo());
             add(new CashCmd(bot));
             // Music
