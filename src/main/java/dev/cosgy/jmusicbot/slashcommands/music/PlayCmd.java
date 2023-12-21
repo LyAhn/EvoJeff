@@ -371,15 +371,15 @@ if (handler.playFromDefault()) {
                         event.reply("`" + event.getOption("input").getAsString() + ".txt` was not found in the playlist folder.").queue();
                         return;
                     }
-                    event.reply(loadingEmoji + "Loading playlist**" + settings.getDefaultPlaylist() + " ** ...( " + playlist.getItems().size() + "songs").queue (m ->
+                    event.reply(loadingEmoji + "Loading playlist **" + settings.getDefaultPlaylist() + " ** ...( " + playlist.getItems().size() + " tracks").queue (m ->
                     {
 
                         playlist.loadTracks(bot.getPlayerManager(), (at) -> handler.addTrack(new QueuedTrack(at, event.getUser())), () -> {
                             StringBuilder builder = new StringBuilder(playlist.getTracks().isEmpty()
-                                    ? event.getClient().getWarning() + "Song not loaded!"
-                                    : event.getClient().getSuccess() + " ** " + playlist.getTracks().size() + " **Song loaded!");
+                                    ? event.getClient().getWarning() + "Track not loaded!"
+                                    : event.getClient().getSuccess() + " ** " + playlist.getTracks().size() + " ** Tracks loaded!");
                             if (!playlist.getErrors().isEmpty())
-                                builder.append("\nThe following song could not be loaded.:");
+                                builder.append("\nThe following track could not be loaded.:");
                             playlist.getErrors().forEach(err -> builder.append("\n`[").append(err.getIndex() + 1).append("]` **").append(err.getItem( )).append("**: ").append(err.getReason()));
                             String str = builder.toString();
                             if (str.length() > 2000)

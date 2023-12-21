@@ -104,8 +104,8 @@ public class SearchCmd extends MusicCommand {
             AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
             int pos = handler.addTrack(new QueuedTrack(track, event.getUser())) + 1;
             m.editOriginal(FormatUtil.filter(event.getClient().getSuccess() + "**" + track.getInfo().title
-                    + "**(`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? "added."
-                    : "has been added to the" + pos + "queue."))).queue();
+                    + "**(`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? "to begin playing"
+                    : " to the queue at position " + pos + " Thanks!"))).queue();
         }
 
         @Override
@@ -127,8 +127,7 @@ public class SearchCmd extends MusicCommand {
                                 + "**(`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? "added."
                                 : "has been added to the" + pos + "queue.")).queue();
                     })
-                    .setCancel((msg) -> {
-                    })
+                    .setCancel((msg) -> {})
                     .setUsers(event.getUser())
             ;
             for (int i = 0; i < 9 && i < playlist.getTracks().size(); i++) {

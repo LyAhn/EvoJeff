@@ -12,7 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * Forked from CosgyDev - MusicBotJP by DubSound/LyAhn
  */
+
 package com.jagrosh.jmusicbot;
 
 import com.github.lalyos.jfiglet.FigletFont;
@@ -71,9 +73,9 @@ public class JMusicBot {
         Logger log = getLogger("Startup");
 
         try {
-            System.out.println(FigletFont.convertOneLine("Jeff" + OtherUtil.getCurrentVersion()) + "\n" + "by LyAhn/KetaFPV/DubSound");
+            System.out.println(FigletFont.convertOneLine("Jeff" + OtherUtil.getCurrentVersion()) + "\n" + "by LyAhn/DubSound");
         } catch (IOException e) {
-            System.out.println("Jeff" + OtherUtil.getCurrentVersion() + "\n by LyAhn/KetaFPV/DubSound");
+            System.out.println("Jeff" + OtherUtil.getCurrentVersion() + "\n by LyAhn/DubSound");
         }
 
 
@@ -120,7 +122,7 @@ public class JMusicBot {
 
         AboutCommand aboutCommand = new AboutCommand(Color.BLUE.brighter(),
                 "[EvoJeff(v" + version + ")](https://github.com/LyAhn/EvoJeff)",
-                new String[]{"High quality music playback", "FairQueue™ Technology", "Easy to host yourself"},
+                new String[]{"High quality music playback", "FairQueue™ Technology", "Easy to host yourself", "Very much in early translation, I wouldn't host this yourself"},
                 RECOMMENDED_PERMS);
         aboutCommand.setIsAuthor(false);
         aboutCommand.setReplacementCharacter("\uD83C\uDFB6"); // 🎶
@@ -152,6 +154,7 @@ public class JMusicBot {
             //if (config.getCosgyDevHost()) add(new InfoCommand(bot));
             // General
             add(new ServerInfo(bot));
+            add(new HelpCmd(bot)); // This should now add the Help command?
             //add(new UserInfo());
             add(new CashCmd(bot));
             // Music

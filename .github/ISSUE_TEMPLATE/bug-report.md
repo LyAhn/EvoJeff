@@ -1,30 +1,30 @@
 ---
-name: バグレポート about: バグや予期しない動作を報告する title: "[バグレポート] タイトルを入力"
-labels: ''
-assignees: ''
+Name: Bug Report About: Report bugs and unexpected movements Title: "Enter Bug Report title"
+Labels: ''
+Assignees: ''
 
 ---
 
-**バグを説明する**
-どのようなバグであるかの明確かつ簡潔な説明。
+** Explain the bug **
+A clear and concise explanation of what bug it is.
 
-**再現する方法**
-問題の再現手順:
+** How to reproduce **
+Procedure for reproduction of problem:
 
-1. '...' を実行
-2. '....'コマンドを実行する
-3. その他の方法 '....'
+Execute 1. '...'
+2. '....' Run the command
+3. Other methods '....'
 
-**予想される動作**
-どのような事がが起こるが予想されていたのかについての明確で簡潔な説明。
+** Predicted operation **
+A clear and concise explanation about what happens, but was expected.
 
-**スクリーンショット**
-該当する場合は、問題を説明するためにスクリーンショットを追加してください。
+**screenshot**
+If applicable, add a screenshot to explain the problem.
 
-**バージョン情報(以下の情報を記入してください):**
+** Version information (Please fill in the following information): **
 
-- オペレーティングシステム(OS): [例 Windows 64bit]
-- ボットバージョン: [例 0.1.0]
+-Operning system (OS): [Example Windows 64bit]
+-Bot version: [Example 0.1.0]
 
-**追加のコンテキスト**
-この問題に関する他の文脈をここに追加してください。
+** Additional context **
+Add another context on this issue here.
