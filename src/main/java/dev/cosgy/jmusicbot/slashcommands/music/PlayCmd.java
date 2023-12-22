@@ -196,7 +196,7 @@ if (handler.playFromDefault()) {
              // Added <title><(length)>.
              // Added <title><(length)> to <playback queue number> in the queue.
              String addMsg = FormatUtil.filter(event.getClient().getSuccess() + "Added **" + (track.getInfo().uri.contains("https://stream.gensokyoradio.net/") ? "Gensokyo Radio" : track.getInfo().title)
-                     + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? " added." : " to the queue at potion " + pos));
+                     + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? " added." : " added to the queue at position " + pos));
              if (playlist == null || !event.getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_ADD_REACTION))
                  m.editMessage(addMsg).queue();
              else {
@@ -426,7 +426,7 @@ if (handler.playFromDefault()) {
                  // Added <title><(length)>.
                  // Added <title><(length)> to <playback queue number> in the queue.
                  String addMsg = FormatUtil.filter(event.getClient().getSuccess() + " **" + (track.getInfo().uri.matches(".*stream.gensokyoradio.net/.*") ? "Gensokyo Radio" : track.getInfo().title)
-                     + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? " added." : " to the queue at potion " + pos));
+                     + "** (`" + FormatUtil.formatTime(track.getDuration()) + "`) " + (pos == 0 ? " added." : " added to the queue at position " + pos));
                  if (playlist == null || !event.getGuild().getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_ADD_REACTION)) {
                      m.editOriginal(addMsg).queue();
                  } else {

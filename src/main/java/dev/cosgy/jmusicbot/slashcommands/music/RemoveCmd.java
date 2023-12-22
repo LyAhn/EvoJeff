@@ -59,7 +59,7 @@ public class RemoveCmd extends MusicCommand {
              if (count == 0)
                  event.replyWarning("There are no songs waiting to be played.");
              else
-                 event.replySuccess(count + "Song deleted.");
+                 event.replySuccess(count + " Tracks removed from queue.");
              return;
          }
          int pos;
@@ -79,7 +79,7 @@ public class RemoveCmd extends MusicCommand {
          QueuedTrack qt = handler.getQueue().get(pos - 1);
          if (qt.getIdentifier() == event.getAuthor().getIdLong()) {
              handler.getQueue().remove(pos - 1);
-             event.replySuccess("**" + (qt.getTrack().getInfo().uri.contains("https://stream.gensokyoradio.net/") ? "Gensokyo Radio" : qt.getTrack(). getInfo().title) + "**Removed from queue.");
+             event.replySuccess("**" + (qt.getTrack().getInfo().uri.contains("https://stream.gensokyoradio.net/") ? "Gensokyo Radio" : qt.getTrack(). getInfo().title) + "** Removed from queue.");
          } else if (isDJ) {
              handler.getQueue().remove(pos - 1);
              User u;
@@ -91,7 +91,7 @@ public class RemoveCmd extends MusicCommand {
              event.replySuccess("**" + qt.getTrack().getInfo().title
                      + "** has been removed from the queue.\n(This song is " + (u == null ? "Someone requested it." : "**" + u.getName() + "** is Requested.") + ")");
          } else {
-             event.replyError("**" + (qt.getTrack().getInfo().uri.contains("https://stream.gensokyoradio.net/") ? "Gensokyo Radio" : qt.getTrack(). getInfo().title) + "Failed to delete **.Reason: Do you have DJ privileges? You cannot delete anything other than your own request.");
+             event.replyError("**" + (qt.getTrack().getInfo().uri.contains("https://stream.gensokyoradio.net/") ? "Gensokyo Radio" : qt.getTrack(). getInfo().title) + "Failed to delete **. Reason: Do you have DJ privileges? You cannot delete anything other than your own request.");
          }
      }
 
@@ -108,7 +108,7 @@ public class RemoveCmd extends MusicCommand {
              if (count == 0)
                  event.reply(event.getClient().getWarning() + "There are no songs waiting to be played.").queue();
              else
-                 event.reply(event.getClient().getSuccess() + count + "Song has been deleted.").queue();
+                 event.reply(event.getClient().getSuccess() + count + " Tracks removed from queue.").queue();
              return;
          }
          int pos;
@@ -128,7 +128,7 @@ public class RemoveCmd extends MusicCommand {
          QueuedTrack qt = handler.getQueue().get(pos - 1);
          if (qt.getIdentifier() == event.getUser().getIdLong()) {
              handler.getQueue().remove(pos - 1);
-             event.reply(event.getClient().getSuccess() + "**" + qt.getTrack().getInfo().title + "**Removed from queue.").queue();
+             event.reply(event.getClient().getSuccess() + "**" + qt.getTrack().getInfo().title + "** Removed from queue.").queue();
          } else if (isDJ) {
              handler.getQueue().remove(pos - 1);
              User u;

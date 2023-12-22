@@ -41,7 +41,7 @@ public class SkipCmd extends MusicCommand {
 
         RequestMetadata rm = handler.getRequestMetadata();
         if (event.getAuthor().getIdLong() == rm.getOwner()) {
-            event.reply(event.getClient().getSuccess() + "**" + (handler.getPlayer().getPlayingTrack().getInfo().uri.contains("https://stream.gensokyoradio.net/" ) ? "Gensokyo Radio" : handler.getPlayer().getPlayingTrack().getInfo().title) + "**Skipped.");
+            event.reply(event.getClient().getSuccess() + "**" + (handler.getPlayer().getPlayingTrack().getInfo().uri.contains("https://stream.gensokyoradio.net/" ) ? "Gensokyo Radio" : handler.getPlayer().getPlayingTrack().getInfo().title) + "** Skipped.");
             handler.getPlayer().stopTrack();
         } else {
             // Number of people in voice chat (not including bots and speaker mutes)
@@ -90,7 +90,7 @@ public class SkipCmd extends MusicCommand {
 
         RequestMetadata rm = handler.getRequestMetadata();
         if (event.getUser().getIdLong() == rm.getOwner()) {
-            event.reply(event.getClient().getSuccess() + "**" + (handler.getPlayer().getPlayingTrack().getInfo().uri.contains("https://stream.gensokyoradio.net/" ) ? "Gensokyo Radio" : handler.getPlayer().getPlayingTrack().getInfo().title) + "**Skipped.").queue();
+            event.reply(event.getClient().getSuccess() + "**" + (handler.getPlayer().getPlayingTrack().getInfo().uri.contains("https://stream.gensokyoradio.net/" ) ? "Gensokyo Radio" : handler.getPlayer().getPlayingTrack().getInfo().title) + "** Skipped.").queue();
             handler.getPlayer().stopTrack();
         } else {
             // Number of people in voice chat (not including bots and speaker mutes)
