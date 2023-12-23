@@ -138,7 +138,7 @@ public class RemoveCmd extends MusicCommand {
                  u = null;
              }
              event.reply(event.getClient().getSuccess() + "**" + qt.getTrack().getInfo().title
-                     + "** has been removed from the queue.\n(This song is " + (u == null ? "Someone requested it." : "**" + u.getName() + "** is Requested.") + ")").queue();
+                     + "** has been removed from the queue.\n(This song is " + (u == null ? " Someone requested it." : "**" + u.getName() + "** is Requested.") + ")").queue();
          } else {
              event.reply(event.getClient().getError() + "**" + qt.getTrack().getInfo().title + "** could not be deleted. Reason: Do you have DJ privileges? You cannot delete requests other than your own.").queue();
          }

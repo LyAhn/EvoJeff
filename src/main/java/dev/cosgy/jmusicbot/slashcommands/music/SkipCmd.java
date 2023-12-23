@@ -69,7 +69,7 @@ public class SkipCmd extends MusicCommand {
             // If the required number of votes is different from the number of people in the voice chat
             if (required != listeners) {
                 // add message
-                msg += "The number of skip requests is " + skippers + ". To skip, " + required + "/" + listeners + "are required.]`";
+                msg += "The number of skip requests is " + skippers + ". To skip, " + required + "/" + listeners + " are required.]`";
             } else {
                 msg = "";
             }
@@ -77,7 +77,7 @@ public class SkipCmd extends MusicCommand {
             // Whether the current number of voters has reached the required number of votes
             if (skippers >= required) {
                 msg += "\n" + event.getClient().getSuccess() + "**" + (handler.getPlayer().getPlayingTrack().getInfo().uri.contains("https://stream.gensokyoradio .net/") ? "Gensokyo Radio" : handler.getPlayer().getPlayingTrack().getInfo().title)
-                        + "**Skipped." + (rm.getOwner() == 0L ? "(Autoplay)" : "(**" + rm.user.username + "**Requested)");
+                        + "**Skipped." + (rm.getOwner() == 0L ? "(Autoplay)" : "(**" + rm.user.username + "** Requested)");
                 handler.getPlayer().stopTrack();
             }
             event.reply(msg);
@@ -102,9 +102,9 @@ public class SkipCmd extends MusicCommand {
 
             // Get the current vote and see if it includes the sender of the message
             if (handler.getVotes().contains(event.getUser().getId())) {
-                msg = event.getClient().getWarning() + "The currently playing song has been requested to be skipped. `[";
+                msg = event.getClient().getWarning() + " The currently playing song has been requested to be skipped.";
             } else {
-                msg = event.getClient().getSuccess() + "You requested to skip the current song.`[";
+                msg = event.getClient().getSuccess() + " You requested to skip the current song.";
                 handler.getVotes().add(event.getUser().getId());
             }
 
@@ -118,7 +118,7 @@ public class SkipCmd extends MusicCommand {
             // If the required number of votes differs from the number of people in the voice chat
              if (required != listeners) {
                  // add message
-                 msg += "The number of skip requests is " + skippers + ". To skip, " + required + "/" + listeners + "are required.]`";
+                 msg += "The number of skip requests is " + skippers + ". To skip, " + required + "/" + listeners + " are required.]`";
              } else {
                  msg = "";
              }
@@ -126,7 +126,7 @@ public class SkipCmd extends MusicCommand {
              // Whether the current number of voters has reached the required number of votes
              if (skippers >= required) {
                  msg += "\n" + event.getClient().getSuccess() + "**" + (handler.getPlayer().getPlayingTrack().getInfo().uri.contains("https://stream.gensokyoradio .net/") ? "Gensokyo Radio" : handler.getPlayer().getPlayingTrack().getInfo().title)
-                         + "**Skipped." + (rm.getOwner() == 0L ? "(Autoplay)" : "(**" + rm.user.username + "**Requested)");
+                         + "**Skipped." + (rm.getOwner() == 0L ? "(Autoplay)" : "(**" + rm.user.username + "** Requested)");
                  handler.getPlayer().stopTrack();
              }
              event.reply(msg).queue();
